@@ -36,7 +36,8 @@ interface Allowance {
     cities: number;
 }
 
-interface Scenario {
+// TODO: rename
+interface ScenarioInput {
     name: string;
     victoryPoints: number;
     allowance: Allowance;
@@ -44,7 +45,7 @@ interface Scenario {
 }
 
 interface Board {
-    hex: ScenarioBuilder;
+    // hex: ScenarioBuilder;
     height: number;
     width: number;
     tiles: Tile[];
@@ -52,7 +53,13 @@ interface Board {
     edges: Edge[];
 }
 
-const DEFAULT_SCENARIO: Scenario = {
+export interface Scenario {
+    allowance: Allowance;
+    board: Board;
+    victoryPoints: number;
+}
+
+const DEFAULT_SCENARIO: ScenarioInput = {
     name: "Base game",
     victoryPoints: 10,
     allowance: {
@@ -89,7 +96,7 @@ const DEFAULT_SCENARIO: Scenario = {
     ],
 };
 
-const SINGLE_HEX_SCENARIO: Scenario = {
+const SINGLE_HEX_SCENARIO: ScenarioInput = {
     name: "One tile game",
     victoryPoints: 10,
     allowance: {
@@ -113,7 +120,7 @@ const SINGLE_HEX_SCENARIO: Scenario = {
 // adapted from https://github.com/sibartlett/colonizers
 export class ScenarioBuilder {
     private players: number;
-    private scenario: any;
+    private scenario: any; // TODO
     private circumradius = 50;
     private apothem = Math.sqrt(
         Math.pow(this.circumradius, 2) - Math.pow(this.circumradius / 2, 2)
@@ -245,11 +252,7 @@ export class ScenarioBuilder {
         });
     }
 
-    getScenario(): {
-        allowance: Allowance;
-        board: Board;
-        victoryPoints: number;
-    } {
+    getScenario(): Scenario {
         let circumradius = this.circumradius;
         let apothem = this.apothem;
         let layout = this.getLayout();
@@ -260,7 +263,7 @@ export class ScenarioBuilder {
         let resourceTiles: Tile[] = [];
         let tileId = 0;
         let desert = 0;
-        let corners: Coordinates[] = []; // TODO: confusing
+        let corners: Coordinates[] = []; // TODO: these not being typed as Corner is confusing
         let edges: Edge[] = [];
 
         // if (this.options.shuffleNumberTokens) {
@@ -285,7 +288,7 @@ export class ScenarioBuilder {
                     y: MathHelper.round(y, 3),
                 };
 
-                if (tile[0] === "t") {
+                if (tile.startsWith("t")) {
                     let tileNo = -1 + parseInt(tile.substring(1), 10);
                     resourceTiles[tileNo] = {
                         id: "T" + tileId,
@@ -301,7 +304,7 @@ export class ScenarioBuilder {
         });
 
         let board: Board = {
-            hex: this,
+            // hex: this,
             height: tileLayout.boardHeight,
             width: tileLayout.boardWidth,
             tiles: [],

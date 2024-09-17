@@ -1,9 +1,10 @@
 import { Game } from "boardgame.io";
 import { INVALID_MOVE } from "boardgame.io/core";
-import { ScenarioBuilder } from "./lib/ScenarioBuilder";
+import { Scenario, ScenarioBuilder } from "./lib/ScenarioBuilder";
 
 export interface GameState {
     cells: Array<string | null>;
+    scenario: Scenario;
 }
 
 // Return true if `cells` is in a winning configuration.
@@ -38,7 +39,7 @@ export const TicTacToe: Game<GameState> = {
         const scenario = scenarioBuilder.getScenario();
         console.log(scenario);
 
-        return { cells: Array(9).fill(null) };
+        return { cells: Array(9).fill(null), scenario };
     },
     turn: {
         minMoves: 1,
