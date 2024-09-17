@@ -37,7 +37,6 @@ export const TicTacToe: Game<GameState> = {
     setup: () => {
         const scenarioBuilder = new ScenarioBuilder();
         const scenario = scenarioBuilder.getScenario();
-        console.log(scenario);
 
         return { cells: Array(9).fill(null), scenario };
     },
