@@ -21,8 +21,8 @@ const RESOURCE_COLORS = {
     desert: Color.desert,
 };
 
-export function TicTacToeBoard({ ctx, G, moves }: BoardProps<GameState>) {
-    const onClick = (id: string) => moves.clickCell(id);
+export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
+    const onClick = (id: string) => moves.clickTile(id);
 
     let winner;
     if (ctx.gameover) {
