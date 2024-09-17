@@ -1,6 +1,5 @@
 import type { BoardProps } from "boardgame.io/dist/types/packages/react";
 import { GameState } from "./Game";
-import { Ctx } from "boardgame.io";
 
 enum Color {
     wood = "#385626",
@@ -35,24 +34,13 @@ export function TicTacToeBoard({ ctx, G, moves }: BoardProps<GameState>) {
             );
     }
 
-    const cellStyle = {
-        border: "1px solid #555",
-        width: "64px",
-        height: "64px",
-        lineHeight: "64px",
-        textAlign: "center" as const,
-        cursor: "pointer",
-        position: "absolute" as const,
-    };
-
     let tiles = [];
     for (const tile of G.scenario.board.tiles) {
         tiles.push(
-            <button
+            <div
                 key={tile.id}
                 onClick={() => onClick(tile.id)}
                 style={{
-                    ...cellStyle,
                     top: tile.center.y + 300,
                     left: tile.center.x + 300,
                     backgroundColor:
@@ -60,9 +48,10 @@ export function TicTacToeBoard({ ctx, G, moves }: BoardProps<GameState>) {
                             (tile.type ?? "sea") as keyof typeof RESOURCE_COLORS
                         ],
                 }}
+                className="hexagon"
             >
                 {tile.type}
-            </button>
+            </div>
         );
     }
 

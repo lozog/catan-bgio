@@ -1,5 +1,4 @@
 import { Game } from "boardgame.io";
-import { INVALID_MOVE } from "boardgame.io/core";
 import { Scenario, ScenarioBuilder } from "./lib/ScenarioBuilder";
 
 export interface GameState {
@@ -47,10 +46,7 @@ export const TicTacToe: Game<GameState> = {
 
     moves: {
         clickCell: ({ G, playerID }, id) => {
-            if (G.cells[id] !== null) {
-                return INVALID_MOVE;
-            }
-            G.cells[id] = playerID;
+            console.log(`clicked tile ${id}`);
         },
     },
 
