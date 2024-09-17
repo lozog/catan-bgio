@@ -1,5 +1,6 @@
 import { Game } from "boardgame.io";
 import { INVALID_MOVE } from "boardgame.io/core";
+import { ScenarioBuilder } from "./lib/ScenarioBuilder";
 
 export interface GameState {
     cells: Array<string | null>;
@@ -32,8 +33,13 @@ function IsDraw(cells: Array<string | null>): boolean {
 }
 
 export const TicTacToe: Game<GameState> = {
-    setup: () => ({ cells: Array(9).fill(null) }),
+    setup: () => {
+        const scenarioBuilder = new ScenarioBuilder();
+        const scenario = scenarioBuilder.getScenario();
+        console.log(scenario);
 
+        return { cells: Array(9).fill(null) };
+    },
     turn: {
         minMoves: 1,
         maxMoves: 1,
