@@ -1,0 +1,35 @@
+.hexagon {
+    width: 95px;
+    line-height: 64px;
+    text-align: center;
+    cursor: pointer;
+    position: absolute;
+
+    /* define hexagon shape */
+    aspect-ratio: 1 / cos(30deg);
+    clip-path: polygon(50% -50%, 100% 50%, 50% 150%, 0 50%);
+
+    /* accounts for the fact that we have the shape's center coordinates, but are using top and left positions */
+    transform: translate(-50%, -50%);
+}
+.hexagon:hover {
+    /* TODO: use styled-components so we don't need !important */
+    background: #efefef !important;
+}
+
+.corner {
+    cursor: pointer;
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    clip-path: circle(12px);
+    background-color: black;
+
+    /* accounts for the fact that we have the shape's center coordinates, but are using top and left positions */
+    transform: translate(-50%, -50%);
+}
+
+.corner:hover {
+    /* TODO: use styled-components so we don't need !important */
+    background: #efefef !important;
+}

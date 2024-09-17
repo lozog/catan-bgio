@@ -1,5 +1,6 @@
 import type { BoardProps } from "boardgame.io/dist/types/packages/react";
 import { GameState } from "./Game";
+import "./Board.css";
 
 enum Color {
     wood = "#385626",
@@ -21,8 +22,11 @@ const RESOURCE_COLORS = {
     desert: Color.desert,
 };
 
+// TODO: implement camera
+const BOARD_OFFSET = 400;
+
 export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
-    const onClick = (id: string) => moves.clickTile(id);
+    const onClick = (id?: string) => moves.clickTile(id);
 
     let winner;
     if (ctx.gameover) {
@@ -41,8 +45,8 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
                 key={tile.id}
                 onClick={() => onClick(tile.id)}
                 style={{
-                    top: tile.center.y + 300,
-                    left: tile.center.x + 300,
+                    top: tile.center.y + BOARD_OFFSET,
+                    left: tile.center.x + BOARD_OFFSET,
                     backgroundColor:
                         RESOURCE_COLORS[
                             (tile.type ?? "sea") as keyof typeof RESOURCE_COLORS
@@ -55,9 +59,25 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
         );
     }
 
+    let corners = [];
+    for (const corner of G.scenario.board.corners) {
+        corners.push(
+            <div
+                key={corner.id}
+                onClick={() => onClick(corner.id)}
+                className="corner"
+                style={{
+                    top: corner.center.y + BOARD_OFFSET, // TODO: why these offsets different?
+                    left: corner.center.x + BOARD_OFFSET,
+                }}
+            />
+        );
+    }
+
     return (
         <div>
             {tiles}
+            {corners}
             {winner}
         </div>
     );

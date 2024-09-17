@@ -11,18 +11,3 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
-/* TODO: move these styles */
-.hexagon {
-  width: 95px;
-  line-height: 64px;
-  text-align: center;
-  cursor: pointer;
-  position: absolute;
-  aspect-ratio: 1/cos(30deg);
-  clip-path: polygon(50% -50%,100% 50%,50% 150%,0 50%);
-}
-.hexagon:hover  {
-  /* TODO: use styled-components so we don't need !important */
-  background: #efefef !important;
-}
