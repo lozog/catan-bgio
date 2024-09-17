@@ -67,8 +67,31 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
                 onClick={() => onClick(corner.id)}
                 className="corner"
                 style={{
-                    top: corner.center.y + BOARD_OFFSET, // TODO: why these offsets different?
+                    top: corner.center.y + BOARD_OFFSET,
                     left: corner.center.x + BOARD_OFFSET,
+                }}
+            />
+        );
+    }
+
+    let edges = [];
+    for (const edge of G.scenario.board.edges) {
+        const { x: x1, y: y1 } = edge.ends[0];
+        const { x: x2, y: y2 } = edge.ends[1];
+        const { x: centerX, y: centerY } = edge.center;
+
+        const length = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+        const angle = Math.atan2(y2 - y1, x2 - x1) * (180 / Math.PI);
+        edges.push(
+            <div
+                key={edge.id}
+                onClick={() => onClick(edge.id)}
+                className="edge"
+                style={{
+                    width: length,
+                    left: centerX + BOARD_OFFSET,
+                    top: centerY + BOARD_OFFSET,
+                    transform: `translate(-50%, -50%) rotate(${angle}deg)`,
                 }}
             />
         );
@@ -77,6 +100,7 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
     return (
         <div>
             {tiles}
+            {edges}
             {corners}
             {winner}
         </div>

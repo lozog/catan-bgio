@@ -1,9 +1,9 @@
 .hexagon {
+    cursor: pointer;
+    position: absolute;
     width: 95px;
     line-height: 64px;
     text-align: center;
-    cursor: pointer;
-    position: absolute;
 
     /* define hexagon shape */
     aspect-ratio: 1 / cos(30deg);
@@ -20,9 +20,9 @@
 .corner {
     cursor: pointer;
     position: absolute;
-    width: 24px;
-    height: 24px;
-    clip-path: circle(12px);
+    width: 20px;
+    height: 20px;
+    clip-path: circle(10px);
     background-color: black;
 
     /* accounts for the fact that we have the shape's center coordinates, but are using top and left positions */
@@ -30,6 +30,22 @@
 }
 
 .corner:hover {
+    /* TODO: use styled-components so we don't need !important */
+    background: #efefef !important;
+}
+
+.edge {
+    cursor: pointer;
+    position: absolute;
+    height: 5px; /* line thickness */
+
+    background-color: red;
+
+    /* accounts for the fact that we have the shape's center coordinates, but are using top and left positions */
+    transform: translate(-50%, -50%);
+}
+
+.edge:hover {
     /* TODO: use styled-components so we don't need !important */
     background: #efefef !important;
 }
