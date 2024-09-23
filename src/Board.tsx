@@ -1,29 +1,7 @@
 import type { BoardProps } from "boardgame.io/dist/types/packages/react";
 import { GameState } from "./lib/types";
 import "./Board.css";
-
-enum Color {
-    wood = "#385626",
-    brick = "#b36127",
-    ore = "#aa998f",
-    sea = "#3777bb",
-    wheat = "#f7bc36",
-    sheep = "#92bb50",
-    desert = "#c79f56",
-}
-
-const RESOURCE_COLORS = {
-    wood: Color.wood,
-    brick: Color.brick,
-    ore: Color.ore,
-    sea: Color.sea,
-    wheat: Color.wheat,
-    sheep: Color.sheep,
-    desert: Color.desert,
-};
-
-// TODO: implement camera
-const BOARD_OFFSET = 300;
+import { BOARD_OFFSET, RESOURCE_COLORS } from "./constants";
 
 export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
     const onClickTile = (id?: string) => moves.clickTile(id);

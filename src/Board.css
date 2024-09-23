@@ -1,7 +1,7 @@
 .hexagon {
     cursor: pointer;
     position: absolute;
-    width: 95px;
+    width: 100px; /* hexagon size */
     line-height: 64px;
     text-align: center;
 
@@ -39,7 +39,8 @@
     position: absolute;
     height: 5px; /* line thickness */
 
-    background-color: red;
+    background-color: #b57112;
+    border: 1px solid black;
 
     /* accounts for the fact that we have the shape's center coordinates, but are using top and left positions */
     transform: translate(-50%, -50%);
