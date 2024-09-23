@@ -36,8 +36,7 @@ export interface Allowance {
     cities: number;
 }
 
-// TODO: rename to Scenario
-export interface ScenarioInput {
+export interface Scenario {
     name: string;
     victoryPoints: number;
     allowance: Allowance;

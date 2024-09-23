@@ -5,7 +5,7 @@ import { GameState } from "./lib/types";
 export const HexGame: Game<GameState> = {
     setup: () => {
         const scenarioBuilder = new ScenarioBuilder();
-        const gameState = scenarioBuilder.getScenario();
+        const gameState = scenarioBuilder.buildGameState();
 
         return gameState;
     },

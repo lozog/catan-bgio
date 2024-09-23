@@ -1,8 +1,8 @@
 import { Coordinates, MathHelper } from "./MathHelper";
 import _ from "lodash";
-import { Board, Edge, Layout, GameState, ScenarioInput, Tile } from "./types";
+import { Board, Edge, Layout, GameState, Scenario, Tile } from "./types";
 
-const DEFAULT_SCENARIO: ScenarioInput = {
+const DEFAULT_SCENARIO: Scenario = {
     name: "Base game",
     victoryPoints: 10,
     allowance: {
@@ -40,7 +40,7 @@ const DEFAULT_SCENARIO: ScenarioInput = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const SINGLE_HEX_SCENARIO: ScenarioInput = {
+const SINGLE_HEX_SCENARIO: Scenario = {
     name: "One tile game",
     victoryPoints: 10,
     allowance: {
@@ -64,7 +64,7 @@ const SINGLE_HEX_SCENARIO: ScenarioInput = {
 // adapted from https://github.com/sibartlett/colonizers
 export class ScenarioBuilder {
     private players: number;
-    private scenario: ScenarioInput;
+    private scenario: Scenario;
     private circumradius = 50;
     private apothem = Math.sqrt(
         Math.pow(this.circumradius, 2) - Math.pow(this.circumradius / 2, 2)
@@ -203,7 +203,7 @@ export class ScenarioBuilder {
         });
     }
 
-    getScenario(): GameState {
+    buildGameState(): GameState {
         let circumradius = this.circumradius;
         let apothem = this.apothem;
         let layout = this.getLayout();
