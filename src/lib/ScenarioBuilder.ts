@@ -1,6 +1,15 @@
 import { Coordinates, MathHelper } from "./MathHelper";
 import _ from "lodash";
-import { Board, Edge, Layout, GameState, Scenario, Tile } from "./types";
+import {
+    Board,
+    Edge,
+    Layout,
+    GameState,
+    Scenario,
+    Tile,
+    Player,
+} from "./types";
+import { PLAYER_COLORS } from "../constants";
 
 const DEFAULT_SCENARIO: Scenario = {
     name: "Base game",
@@ -203,7 +212,7 @@ export class ScenarioBuilder {
         });
     }
 
-    buildGameState(): GameState {
+    buildGameState(numPlayers: number): GameState {
         let circumradius = this.circumradius;
         let apothem = this.apothem;
         let layout = this.getLayout();
@@ -337,10 +346,21 @@ export class ScenarioBuilder {
         this.processCorners(board, corners);
         this.processEdges(board, edges);
 
+        const players: Player[] = [];
+        for (let i = 0; i < numPlayers; i++) {
+            players.push({
+                id: i.toString(),
+                color: PLAYER_COLORS[
+                    Math.floor(Math.random() * PLAYER_COLORS.length)
+                ],
+            });
+        }
+
         return {
             allowance: this.scenario.allowance,
             board,
             victoryPoints: this.scenario.victoryPoints,
+            players,
         };
     }
 }

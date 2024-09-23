@@ -3,9 +3,9 @@ import { ScenarioBuilder } from "./lib/ScenarioBuilder";
 import { GameState } from "./lib/types";
 
 export const HexGame: Game<GameState> = {
-    setup: () => {
+    setup: ({ ctx }) => {
         const scenarioBuilder = new ScenarioBuilder();
-        const gameState = scenarioBuilder.buildGameState();
+        const gameState = scenarioBuilder.buildGameState(ctx.numPlayers);
 
         return gameState;
     },

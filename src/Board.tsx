@@ -63,6 +63,7 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
 
     let corners = [];
     for (const corner of G.board.corners) {
+        const player = G.players.find((p) => p.id === corner.player);
         corners.push(
             <div
                 key={corner.id}
@@ -71,6 +72,7 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
                 style={{
                     top: corner.center.y + BOARD_OFFSET,
                     left: corner.center.x + BOARD_OFFSET,
+                    backgroundColor: player?.color,
                 }}
             />
         );
