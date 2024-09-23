@@ -8,6 +8,7 @@ import {
     findPlayer,
     isCorner,
     isEdge,
+    isEdgeAdjacentToCorner,
 } from "./lib/helpers";
 
 export const HexGame: Game<GameState> = {
@@ -50,13 +51,22 @@ export const HexGame: Game<GameState> = {
                             return INVALID_MOVE;
                         }
                     } else {
-                        // TODO: edge must be adjacent to corner
                         if (isEdge(id)) {
                             const edge = findEdge(G, id);
 
                             if (edge.player) {
                                 return INVALID_MOVE;
                             }
+
+                            if (
+                                !isEdgeAdjacentToCorner(
+                                    edge,
+                                    findCorner(G, player.settlements[0])
+                                )
+                            ) {
+                                return INVALID_MOVE;
+                            }
+
                             edge.player = playerID;
                             player.roads.push(edge.id!);
                         } else {
@@ -96,13 +106,22 @@ export const HexGame: Game<GameState> = {
                             return INVALID_MOVE;
                         }
                     } else {
-                        // TODO: edge must be adjacent to corner
                         if (isEdge(id)) {
                             const edge = findEdge(G, id);
 
                             if (edge.player) {
                                 return INVALID_MOVE;
                             }
+
+                            if (
+                                !isEdgeAdjacentToCorner(
+                                    edge,
+                                    findCorner(G, player.settlements[1])
+                                )
+                            ) {
+                                return INVALID_MOVE;
+                            }
+
                             edge.player = playerID;
                             player.roads.push(edge.id!);
                         } else {

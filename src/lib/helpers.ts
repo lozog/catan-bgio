@@ -1,3 +1,4 @@
+import { MathHelper } from "./MathHelper";
 import { Corner, Edge, GameState, Player } from "./types";
 
 export function isCorner(id: string): boolean {
@@ -30,4 +31,13 @@ export function findEdge(G: GameState, id: string): Edge {
         throw new Error("edge not found");
     }
     return edge;
+}
+
+// edge is adjacent to corner if one of the edge ends' coordinates
+// matches the coordinates of the corner's center
+export function isEdgeAdjacentToCorner(edge: Edge, corner: Corner): boolean {
+    return (
+        MathHelper.areCoordinatesEqual(edge.ends[0], corner.center) ||
+        MathHelper.areCoordinatesEqual(edge.ends[1], corner.center)
+    );
 }
