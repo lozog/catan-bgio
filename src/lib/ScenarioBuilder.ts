@@ -350,9 +350,9 @@ export class ScenarioBuilder {
         for (let i = 0; i < numPlayers; i++) {
             players.push({
                 id: i.toString(),
-                color: PLAYER_COLORS[
-                    Math.floor(Math.random() * PLAYER_COLORS.length)
-                ],
+                color: PLAYER_COLORS[i],
+                settlements: [],
+                roads: [],
             });
         }
 

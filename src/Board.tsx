@@ -4,9 +4,7 @@ import "./Board.css";
 import { BOARD_OFFSET, RESOURCE_COLORS } from "./constants";
 
 export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
-    const onClickTile = (id?: string) => moves.clickTile(id);
-    const onClickCorner = (id?: string) => moves.clickCorner(id);
-    const onClickEdge = (id?: string) => moves.clickEdge(id);
+    const onClickBoardPiece = (id?: string) => moves.onClickBoardPiece(id);
 
     let winner;
     if (ctx.gameover) {
@@ -23,7 +21,7 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
         tiles.push(
             <div
                 key={tile.id}
-                onClick={() => onClickTile(tile.id)}
+                onClick={() => onClickBoardPiece(tile.id)}
                 style={{
                     top: tile.center.y + BOARD_OFFSET,
                     left: tile.center.x + BOARD_OFFSET,
@@ -45,7 +43,7 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
         corners.push(
             <div
                 key={corner.id}
-                onClick={() => onClickCorner(corner.id)}
+                onClick={() => onClickBoardPiece(corner.id)}
                 className="corner"
                 style={{
                     top: corner.center.y + BOARD_OFFSET,
@@ -64,16 +62,18 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
 
         const length = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
         const angle = Math.atan2(y2 - y1, x2 - x1) * (180 / Math.PI);
+        const player = G.players.find((p) => p.id === edge.player);
         edges.push(
             <div
                 key={edge.id}
-                onClick={() => onClickEdge(edge.id)}
+                onClick={() => onClickBoardPiece(edge.id)}
                 className="edge"
                 style={{
                     width: length,
                     left: centerX + BOARD_OFFSET,
                     top: centerY + BOARD_OFFSET,
                     transform: `translate(-50%, -50%) rotate(${angle}deg)`,
+                    backgroundColor: player?.color,
                 }}
             />
         );

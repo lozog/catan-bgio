@@ -4,6 +4,7 @@ export interface Edge {
     id?: string; // TODO: should be required
     center: Coordinates;
     ends: Coordinates[];
+    player?: string;
 }
 
 export interface Tile {
@@ -55,6 +56,8 @@ export interface Board {
 export interface Player {
     id: string;
     color: string;
+    settlements: string[];
+    roads: string[];
 }
 
 export interface GameState {
