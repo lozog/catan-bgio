@@ -8,7 +8,7 @@ export interface GameState {
 export const HexGame: Game<GameState> = {
     setup: () => {
         const scenarioBuilder = new ScenarioBuilder();
-        const scenario = scenarioBuilder.getScenario();
+        const scenario = scenarioBuilder.getScenario(); // TODO it's the whole gamestate actually
 
         return { scenario };
     },
@@ -17,9 +17,22 @@ export const HexGame: Game<GameState> = {
         maxMoves: 1,
     },
 
-    moves: {
-        clickTile: ({ G, playerID }, id) => {
-            console.log(`clicked tile ${id}`);
+    phases: {
+        setupForward: {
+            start: true,
+            moves: {
+                clickCorner: ({ G, playerID }, id) => {
+                    console.log(`clicked ${id}`);
+                    const corner = G.scenario.board.corners.find(
+                        (c) => c.id === id
+                    );
+                    if (!corner) {
+                        console.log("corner undefined");
+                        return;
+                    }
+                    corner.player = playerID;
+                },
+            },
         },
     },
 };

@@ -23,10 +23,12 @@ const RESOURCE_COLORS = {
 };
 
 // TODO: implement camera
-const BOARD_OFFSET = 400;
+const BOARD_OFFSET = 300;
 
 export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
-    const onClick = (id?: string) => moves.clickTile(id);
+    const onClickTile = (id?: string) => moves.clickTile(id);
+    const onClickCorner = (id?: string) => moves.clickCorner(id);
+    const onClickEdge = (id?: string) => moves.clickEdge(id);
 
     let winner;
     if (ctx.gameover) {
@@ -43,7 +45,7 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
         tiles.push(
             <div
                 key={tile.id}
-                onClick={() => onClick(tile.id)}
+                onClick={() => onClickTile(tile.id)}
                 style={{
                     top: tile.center.y + BOARD_OFFSET,
                     left: tile.center.x + BOARD_OFFSET,
@@ -64,7 +66,7 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
         corners.push(
             <div
                 key={corner.id}
-                onClick={() => onClick(corner.id)}
+                onClick={() => onClickCorner(corner.id)}
                 className="corner"
                 style={{
                     top: corner.center.y + BOARD_OFFSET,
@@ -85,7 +87,7 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
         edges.push(
             <div
                 key={edge.id}
-                onClick={() => onClick(edge.id)}
+                onClick={() => onClickEdge(edge.id)}
                 className="edge"
                 style={{
                     width: length,

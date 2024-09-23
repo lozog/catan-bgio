@@ -18,6 +18,7 @@ interface Tile {
 interface Corner {
     id?: string;
     center: Coordinates;
+    player?: string;
 }
 
 interface Layout {
