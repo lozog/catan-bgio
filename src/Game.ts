@@ -45,7 +45,7 @@ export const HexGame: Game<GameState> = {
                         if (isEdge(id)) {
                             const edge = findEdge(G, id);
                             edge.player = playerID;
-                            player.settlements.push(edge.id!);
+                            player.roads.push(edge.id!);
                         } else {
                             return INVALID_MOVE;
                         }
@@ -78,7 +78,7 @@ export const HexGame: Game<GameState> = {
                         if (isEdge(id)) {
                             const edge = findEdge(G, id);
                             edge.player = playerID;
-                            player.settlements.push(edge.id!);
+                            player.roads.push(edge.id!);
                         } else {
                             return INVALID_MOVE;
                         }
