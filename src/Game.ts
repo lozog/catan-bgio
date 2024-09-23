@@ -40,6 +40,10 @@ export const HexGame: Game<GameState> = {
                     if (player.settlements.length === 0) {
                         if (isCorner(id)) {
                             const corner = findCorner(G, id);
+
+                            if (corner.player) {
+                                return INVALID_MOVE;
+                            }
                             corner.player = playerID;
                             player.settlements.push(corner.id!);
                         } else {
@@ -49,6 +53,10 @@ export const HexGame: Game<GameState> = {
                         // TODO: edge must be adjacent to corner
                         if (isEdge(id)) {
                             const edge = findEdge(G, id);
+
+                            if (edge.player) {
+                                return INVALID_MOVE;
+                            }
                             edge.player = playerID;
                             player.roads.push(edge.id!);
                         } else {
@@ -78,6 +86,10 @@ export const HexGame: Game<GameState> = {
                     if (player.settlements.length === 1) {
                         if (isCorner(id)) {
                             const corner = findCorner(G, id);
+
+                            if (corner.player) {
+                                return INVALID_MOVE;
+                            }
                             corner.player = playerID;
                             player.settlements.push(corner.id!);
                         } else {
@@ -87,6 +99,10 @@ export const HexGame: Game<GameState> = {
                         // TODO: edge must be adjacent to corner
                         if (isEdge(id)) {
                             const edge = findEdge(G, id);
+
+                            if (edge.player) {
+                                return INVALID_MOVE;
+                            }
                             edge.player = playerID;
                             player.roads.push(edge.id!);
                         } else {
