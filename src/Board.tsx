@@ -1,5 +1,5 @@
 import type { BoardProps } from "boardgame.io/dist/types/packages/react";
-import { GameState } from "./Game";
+import { GameState } from "./lib/types";
 import "./Board.css";
 
 enum Color {
@@ -41,7 +41,7 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
     }
 
     let tiles = [];
-    for (const tile of G.scenario.board.tiles) {
+    for (const tile of G.board.tiles) {
         tiles.push(
             <div
                 key={tile.id}
@@ -62,7 +62,7 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
     }
 
     let corners = [];
-    for (const corner of G.scenario.board.corners) {
+    for (const corner of G.board.corners) {
         corners.push(
             <div
                 key={corner.id}
@@ -77,7 +77,7 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
     }
 
     let edges = [];
-    for (const edge of G.scenario.board.edges) {
+    for (const edge of G.board.edges) {
         const { x: x1, y: y1 } = edge.ends[0];
         const { x: x2, y: y2 } = edge.ends[1];
         const { x: centerX, y: centerY } = edge.center;

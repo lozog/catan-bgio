@@ -1,64 +1,6 @@
 import { Coordinates, MathHelper } from "./MathHelper";
 import _ from "lodash";
-
-interface Edge {
-    id?: string;
-    center: Coordinates;
-    ends: Coordinates[];
-}
-
-interface Tile {
-    id: string;
-    center: Coordinates;
-    type?: string;
-    value?: number;
-    tileType?: string;
-}
-
-interface Corner {
-    id?: string;
-    center: Coordinates;
-    player?: string;
-}
-
-interface Layout {
-    players: {
-        min: number;
-        max: number;
-    };
-    numberTokens: number[];
-    terrainTiles: string;
-    tiles: string[];
-}
-
-interface Allowance {
-    roads: number;
-    settlements: number;
-    cities: number;
-}
-
-// TODO: rename
-interface ScenarioInput {
-    name: string;
-    victoryPoints: number;
-    allowance: Allowance;
-    layouts: Layout[];
-}
-
-interface Board {
-    // hex: ScenarioBuilder;
-    height: number;
-    width: number;
-    tiles: Tile[];
-    corners: Corner[];
-    edges: Edge[];
-}
-
-export interface Scenario {
-    allowance: Allowance;
-    board: Board;
-    victoryPoints: number;
-}
+import { Board, Edge, Layout, GameState, ScenarioInput, Tile } from "./types";
 
 const DEFAULT_SCENARIO: ScenarioInput = {
     name: "Base game",
@@ -97,6 +39,7 @@ const DEFAULT_SCENARIO: ScenarioInput = {
     ],
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const SINGLE_HEX_SCENARIO: ScenarioInput = {
     name: "One tile game",
     victoryPoints: 10,
@@ -121,7 +64,7 @@ const SINGLE_HEX_SCENARIO: ScenarioInput = {
 // adapted from https://github.com/sibartlett/colonizers
 export class ScenarioBuilder {
     private players: number;
-    private scenario: any; // TODO
+    private scenario: ScenarioInput;
     private circumradius = 50;
     private apothem = Math.sqrt(
         Math.pow(this.circumradius, 2) - Math.pow(this.circumradius / 2, 2)
@@ -137,16 +80,23 @@ export class ScenarioBuilder {
         this.scenario = DEFAULT_SCENARIO;
     }
 
-    getCircumradius() {
+    getCircumradius(): number {
         return this.circumradius;
     }
 
-    getLayout() {
-        return this.scenario.layouts.find(
+    getLayout(): Layout {
+        const res = this.scenario.layouts.find(
             (layout: Layout) =>
                 layout.players.min === this.players ||
                 layout.players.max >= this.players
         );
+
+        if (!res) {
+            throw new Error(
+                "Could not find layout suitable for this number of players"
+            );
+        }
+        return res;
     }
 
     getTileLayout(layout: Layout) {
@@ -253,7 +203,7 @@ export class ScenarioBuilder {
         });
     }
 
-    getScenario(): Scenario {
+    getScenario(): GameState {
         let circumradius = this.circumradius;
         let apothem = this.apothem;
         let layout = this.getLayout();

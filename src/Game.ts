@@ -1,16 +1,13 @@
 import { Game } from "boardgame.io";
-import { Scenario, ScenarioBuilder } from "./lib/ScenarioBuilder";
-
-export interface GameState {
-    scenario: Scenario;
-}
+import { ScenarioBuilder } from "./lib/ScenarioBuilder";
+import { GameState } from "./lib/types";
 
 export const HexGame: Game<GameState> = {
     setup: () => {
         const scenarioBuilder = new ScenarioBuilder();
-        const scenario = scenarioBuilder.getScenario(); // TODO it's the whole gamestate actually
+        const gameState = scenarioBuilder.getScenario();
 
-        return { scenario };
+        return gameState;
     },
     turn: {
         minMoves: 1,
@@ -23,12 +20,9 @@ export const HexGame: Game<GameState> = {
             moves: {
                 clickCorner: ({ G, playerID }, id) => {
                     console.log(`clicked ${id}`);
-                    const corner = G.scenario.board.corners.find(
-                        (c) => c.id === id
-                    );
+                    const corner = G.board.corners.find((c) => c.id === id);
                     if (!corner) {
-                        console.log("corner undefined");
-                        return;
+                        throw new Error("Corner not found");
                     }
                     corner.player = playerID;
                 },
