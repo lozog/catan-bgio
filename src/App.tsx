@@ -5,7 +5,7 @@ import { HexGame } from "./Game";
 const App = Client({
     game: HexGame,
     board: HexBoard,
-    numPlayers: 2,
+    numPlayers: 3,
 });
 
 export default App;
