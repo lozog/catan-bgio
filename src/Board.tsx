@@ -32,7 +32,7 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
                 }}
                 className="hexagon"
             >
-                {tile.type}
+                {tile.id}
             </div>
         );
     }
@@ -49,8 +49,13 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
                     top: corner.center.y + BOARD_OFFSET,
                     left: corner.center.x + BOARD_OFFSET,
                     backgroundColor: player?.color,
+                    color: "white",
+                    fontSize: "8px",
+                    lineHeight: "18px",
                 }}
-            />
+            >
+                {corner.id}
+            </div>
         );
     }
 

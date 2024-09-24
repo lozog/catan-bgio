@@ -19,7 +19,7 @@ export interface Corner {
     id: string;
     center: Coordinates;
     player?: string;
-    tiles?: string[];
+    tiles: string[];
 }
 
 export interface Layout {

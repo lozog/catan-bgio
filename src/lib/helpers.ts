@@ -1,4 +1,4 @@
-import { MathHelper } from "./MathHelper";
+import { Coordinates, MathHelper } from "./MathHelper";
 import { Corner, Edge, GameState, Player } from "./types";
 
 export function isCorner(id: string): boolean {

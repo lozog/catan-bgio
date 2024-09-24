@@ -168,6 +168,7 @@ export class ScenarioBuilder {
             board.corners.push({
                 id: cornerId,
                 center: corner.point,
+                tiles: [],
             });
         });
     }
@@ -200,6 +201,34 @@ export class ScenarioBuilder {
                 center: edge.center,
                 ends: edge.ends,
             });
+        });
+    }
+
+    processCornerAdjacency(board: Board) {
+        // for each resource tile, find all adjacent corners and add the tile to the corner's tile list
+        board.tiles.forEach((tile) => {
+            if (
+                !["wood", "ore", "brick", "wheat", "sheep"].includes(
+                    tile.type ?? ""
+                )
+            )
+                return;
+            // console.log(tile);
+            for (let angle = 0; angle <= 300; angle += 60) {
+                const cornerCenter = MathHelper.getEndpoint(
+                    tile.center,
+                    angle,
+                    this.circumradius
+                );
+                const corner = board.corners.find((c) =>
+                    MathHelper.areCoordinatesEqual(c.center, cornerCenter)
+                );
+                if (!corner) {
+                    continue;
+                }
+                corner.tiles.push(tile.id);
+                // console.log(`found corner ${corner?.id} for tile ${tile.id}`);
+            }
         });
     }
 
@@ -294,7 +323,6 @@ export class ScenarioBuilder {
             }
 
             let value = 0;
-            let angle;
 
             if (tile.tileType === "desert") {
                 desert += 1;
@@ -302,13 +330,13 @@ export class ScenarioBuilder {
                 value = numberTokens[index - desert];
             }
 
-            for (angle = 0; angle <= 300; angle += 60) {
+            for (let angle = 0; angle <= 300; angle += 60) {
                 cornerCenters.push(
                     MathHelper.getEndpoint(tile.center, angle, circumradius)
                 );
             }
 
-            for (angle = 30; angle <= 330; angle += 60) {
+            for (let angle = 30; angle <= 330; angle += 60) {
                 edges.push({
                     center: MathHelper.getEndpoint(tile.center, angle, apothem),
                     ends: [
@@ -336,6 +364,7 @@ export class ScenarioBuilder {
 
         this.processCorners(board, cornerCenters);
         this.processEdges(board, edges);
+        this.processCornerAdjacency(board);
 
         const players: Player[] = [];
         for (let i = 0; i < this.numPlayers; i++) {
