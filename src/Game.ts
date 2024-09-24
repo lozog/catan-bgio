@@ -102,6 +102,8 @@ export const HexGame: Game<GameState> = {
                             }
                             corner.player = playerID;
                             player.settlements.push(corner.id!);
+
+                            // TODO: add adjacent resources to player's hand
                         } else {
                             return INVALID_MOVE;
                         }

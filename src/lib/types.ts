@@ -53,11 +53,20 @@ export interface Board {
     edges: Edge[];
 }
 
+interface Hand {
+    wood: number;
+    brick: number;
+    ore: number;
+    wheat: number;
+    sheep: number;
+}
+
 export interface Player {
     id: string;
     color: string;
     settlements: string[];
     roads: string[];
+    hand: Hand;
 }
 
 export interface GameState {
