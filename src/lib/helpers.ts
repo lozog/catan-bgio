@@ -1,5 +1,5 @@
-import { Coordinates, MathHelper } from "./MathHelper";
-import { Corner, Edge, GameState, Player } from "./types";
+import { MathHelper } from "./MathHelper";
+import { Corner, Edge, GameState, Player, Tile } from "./types";
 
 export function isCorner(id: string): boolean {
     return id[0] === "C";
@@ -26,11 +26,19 @@ export function findCorner(G: GameState, id: string): Corner {
 }
 
 export function findEdge(G: GameState, id: string): Edge {
-    const edge = G.board.edges.find((c) => c.id === id);
+    const edge = G.board.edges.find((e) => e.id === id);
     if (!edge) {
         throw new Error("edge not found");
     }
     return edge;
+}
+
+export function findTile(G: GameState, id: string): Tile {
+    const tile = G.board.tiles.find((t) => t.id === id);
+    if (!tile) {
+        throw new Error("tile not found");
+    }
+    return tile;
 }
 
 // edge is adjacent to corner if one of the edge ends' coordinates

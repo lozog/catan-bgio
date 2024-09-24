@@ -204,8 +204,11 @@ export class ScenarioBuilder {
         });
     }
 
+    /**
+     * for each resource tile, find all adjacent corners and
+     * add the tile to the corner's tile list
+     */
     processCornerAdjacency(board: Board) {
-        // for each resource tile, find all adjacent corners and add the tile to the corner's tile list
         board.tiles.forEach((tile) => {
             if (
                 !["wood", "ore", "brick", "wheat", "sheep"].includes(

@@ -1,5 +1,7 @@
 import { Coordinates } from "./MathHelper";
 
+type TileType = "wood" | "brick" | "ore" | "wheat" | "sheep" | "desert" | "sea";
+
 export interface Edge {
     id: string;
     center: Coordinates;
@@ -10,7 +12,7 @@ export interface Edge {
 export interface Tile {
     id: string;
     center: Coordinates;
-    type?: string;
+    type?: TileType;
     value?: number;
 }
 
@@ -53,7 +55,7 @@ export interface Board {
     edges: Edge[];
 }
 
-interface Hand {
+export interface Hand {
     wood: number;
     brick: number;
     ore: number;

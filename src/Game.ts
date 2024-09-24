@@ -1,11 +1,12 @@
 import { Game } from "boardgame.io";
 import { ScenarioBuilder } from "./lib/ScenarioBuilder";
-import { GameState } from "./lib/types";
+import { GameState, Hand } from "./lib/types";
 import { INVALID_MOVE } from "boardgame.io/core";
 import {
     findCorner,
     findEdge,
     findPlayer,
+    findTile,
     isCorner,
     isEdge,
     isEdgeAdjacentToCorner,
@@ -103,7 +104,16 @@ export const HexGame: Game<GameState> = {
                             corner.player = playerID;
                             player.settlements.push(corner.id!);
 
-                            // TODO: add adjacent resources to player's hand
+                            corner.tiles.forEach((tileId) => {
+                                const tile = findTile(G, tileId);
+                                if (!tile.type) {
+                                    throw new Error(
+                                        `Tile ${tile.id} is missing type`
+                                    );
+                                }
+                                if (!(tile.type in player.hand)) return;
+                                player.hand[tile.type as keyof Hand]++;
+                            });
                         } else {
                             return INVALID_MOVE;
                         }
