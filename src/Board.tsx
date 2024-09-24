@@ -16,7 +16,7 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
             );
     }
 
-    let tiles = [];
+    const tiles = [];
     for (const tile of G.board.tiles) {
         tiles.push(
             <div
@@ -37,7 +37,7 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
         );
     }
 
-    let corners = [];
+    const corners = [];
     for (const corner of G.board.corners) {
         const player = G.players.find((p) => p.id === corner.player);
         corners.push(
@@ -54,7 +54,7 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
         );
     }
 
-    let edges = [];
+    const edges = [];
     for (const edge of G.board.edges) {
         const { x: x1, y: y1 } = edge.ends[0];
         const { x: x2, y: y2 } = edge.ends[1];

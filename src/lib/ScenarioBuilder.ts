@@ -80,7 +80,7 @@ export class ScenarioBuilder {
     );
 
     constructor() {
-        // let defaults = {
+        // const defaults = {
         //     shuffleTerrainTiles: true,
         //     shuffleNumberTokens: false,
         // };
@@ -109,33 +109,33 @@ export class ScenarioBuilder {
     }
 
     getTileLayout(layout: Layout) {
-        let circumradius = this.circumradius;
-        let apothem = this.apothem;
+        const circumradius = this.circumradius;
+        const apothem = this.apothem;
 
-        let tiles = layout.tiles.map((row) => row.split(","));
+        const tiles = layout.tiles.map((row) => row.split(","));
 
-        let counts = tiles.map((row) => row.length);
+        const counts = tiles.map((row) => row.length);
 
-        let max = Math.max(...counts);
-        let maxIndex = counts.indexOf(max) % 2;
+        const max = Math.max(...counts);
+        const maxIndex = counts.indexOf(max) % 2;
 
         tiles.forEach(function (row, index) {
-            let length = index % 2 === maxIndex ? max : max - 1;
-            let add = length - row.length;
+            const length = index % 2 === maxIndex ? max : max - 1;
+            const add = length - row.length;
             for (let i = 0; i < add; i++) {
                 row.push("-");
             }
         });
 
-        let boardHeight = apothem * (tiles.length + 1);
-        let boardWidth = (max * 2 + (max - 1)) * this.circumradius;
-        let maxOffsetX = -(boardWidth / 2 - circumradius);
-        let minOffsetX = circumradius * 1.5 + maxOffsetX;
-        let offsetX = [
+        const boardHeight = apothem * (tiles.length + 1);
+        const boardWidth = (max * 2 + (max - 1)) * this.circumradius;
+        const maxOffsetX = -(boardWidth / 2 - circumradius);
+        const minOffsetX = circumradius * 1.5 + maxOffsetX;
+        const offsetX = [
             maxIndex === 0 ? maxOffsetX : minOffsetX,
             maxIndex === 1 ? maxOffsetX : minOffsetX,
         ];
-        let offsetY = -(boardHeight / 2 - apothem);
+        const offsetY = -(boardHeight / 2 - apothem);
 
         return {
             firstRowIsMax: maxIndex === 0,
@@ -153,7 +153,7 @@ export class ScenarioBuilder {
     }
 
     processCorners(board: Board, corners: Coordinates[]) {
-        let corners1 = _.chain(corners)
+        const corners1 = _.chain(corners)
             .map(function (corner) {
                 return {
                     point: corner,
@@ -173,7 +173,7 @@ export class ScenarioBuilder {
             .value();
 
         corners1.forEach(function (corner, index) {
-            let cornerId = "C" + (index + 1);
+            const cornerId = "C" + (index + 1);
             board.corners.push({
                 id: cornerId,
                 center: corner.point,
@@ -182,7 +182,7 @@ export class ScenarioBuilder {
     }
 
     processEdges(board: Board, edges: Edge[]) {
-        let edges1 = _.chain(edges)
+        const edges1 = _.chain(edges)
             .map(function (edge) {
                 return {
                     center: edge.center,
@@ -203,7 +203,7 @@ export class ScenarioBuilder {
             .value();
 
         edges1.forEach(function (edge, index) {
-            let edgeId = "E" + (index + 1);
+            const edgeId = "E" + (index + 1);
             board.edges.push({
                 id: edgeId,
                 center: edge.center,
@@ -213,18 +213,18 @@ export class ScenarioBuilder {
     }
 
     buildGameState(numPlayers: number): GameState {
-        let circumradius = this.circumradius;
-        let apothem = this.apothem;
-        let layout = this.getLayout();
-        let numberTokens = layout.numberTokens;
-        let terrainTiles = layout.terrainTiles.split(",");
-        let tileLayout = this.getTileLayout(layout);
-        let seaTiles: Tile[] = [];
-        let resourceTiles: Tile[] = [];
+        const circumradius = this.circumradius;
+        const apothem = this.apothem;
+        const layout = this.getLayout();
+        const numberTokens = layout.numberTokens;
+        const terrainTiles = layout.terrainTiles.split(",");
+        const tileLayout = this.getTileLayout(layout);
+        const seaTiles: Tile[] = [];
+        const resourceTiles: Tile[] = [];
         let tileId = 0;
         let desert = 0;
-        let corners: Coordinates[] = []; // TODO: these not being typed as Corner is confusing
-        let edges: Edge[] = [];
+        const corners: Coordinates[] = []; // TODO: these not being typed as Corner is confusing
+        const edges: Edge[] = [];
 
         // if (this.options.shuffleNumberTokens) {
         //   numberTokens = _.shuffle(numberTokens);
@@ -241,15 +241,15 @@ export class ScenarioBuilder {
                 }
 
                 tileId++;
-                let x = tileLayout.offsetX[i % 2] + circumradius * 3 * j;
-                let y = apothem * i + tileLayout.offsetY;
-                let center = {
+                const x = tileLayout.offsetX[i % 2] + circumradius * 3 * j;
+                const y = apothem * i + tileLayout.offsetY;
+                const center = {
                     x: MathHelper.round(x, 3),
                     y: MathHelper.round(y, 3),
                 };
 
                 if (tile.startsWith("t")) {
-                    let tileNo = -1 + parseInt(tile.substring(1), 10);
+                    const tileNo = -1 + parseInt(tile.substring(1), 10);
                     resourceTiles[tileNo] = {
                         id: "T" + tileId,
                         center: center,
@@ -263,7 +263,7 @@ export class ScenarioBuilder {
             });
         });
 
-        let board: Board = {
+        const board: Board = {
             // hex: this,
             height: tileLayout.boardHeight,
             width: tileLayout.boardWidth,
