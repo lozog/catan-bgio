@@ -72,32 +72,28 @@ const SINGLE_HEX_SCENARIO: Scenario = {
 
 // adapted from https://github.com/sibartlett/colonizers
 export class ScenarioBuilder {
-    private players: number;
+    private numPlayers: number;
     private scenario: Scenario;
     private circumradius = 50;
     private apothem = Math.sqrt(
         Math.pow(this.circumradius, 2) - Math.pow(this.circumradius / 2, 2)
     );
 
-    constructor() {
+    constructor(numPlayers: number) {
         // const defaults = {
         //     shuffleTerrainTiles: true,
         //     shuffleNumberTokens: false,
         // };
 
-        this.players = 3;
+        this.numPlayers = numPlayers;
         this.scenario = DEFAULT_SCENARIO;
-    }
-
-    getCircumradius(): number {
-        return this.circumradius;
     }
 
     getLayout(): Layout {
         const res = this.scenario.layouts.find(
             (layout: Layout) =>
-                layout.players.min === this.players ||
-                layout.players.max >= this.players
+                layout.players.min === this.numPlayers ||
+                layout.players.max >= this.numPlayers
         );
 
         if (!res) {
@@ -212,7 +208,7 @@ export class ScenarioBuilder {
         });
     }
 
-    buildGameState(numPlayers: number): GameState {
+    buildGameState(): GameState {
         const circumradius = this.circumradius;
         const apothem = this.apothem;
         const layout = this.getLayout();
@@ -347,7 +343,7 @@ export class ScenarioBuilder {
         this.processEdges(board, edges);
 
         const players: Player[] = [];
-        for (let i = 0; i < numPlayers; i++) {
+        for (let i = 0; i < this.numPlayers; i++) {
             players.push({
                 id: i.toString(),
                 color: PLAYER_COLORS[i],

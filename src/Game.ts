@@ -13,8 +13,8 @@ import {
 
 export const HexGame: Game<GameState> = {
     setup: ({ ctx }) => {
-        const scenarioBuilder = new ScenarioBuilder();
-        const gameState = scenarioBuilder.buildGameState(ctx.numPlayers);
+        const scenarioBuilder = new ScenarioBuilder(ctx.numPlayers);
+        const gameState = scenarioBuilder.buildGameState();
 
         return gameState;
     },
