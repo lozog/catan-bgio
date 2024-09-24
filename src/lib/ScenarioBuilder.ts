@@ -302,27 +302,27 @@ export class ScenarioBuilder {
         resourceTiles.forEach((tile, index) => {
             switch (terrainTiles[index]) {
                 case "d":
-                    tile.tileType = "desert";
+                    tile.type = "desert";
                     break;
                 case "b":
-                    tile.tileType = "brick";
+                    tile.type = "brick";
                     break;
                 case "g":
-                    tile.tileType = "wheat";
+                    tile.type = "wheat";
                     break;
                 case "l":
-                    tile.tileType = "wood";
+                    tile.type = "wood";
                     break;
                 case "o":
-                    tile.tileType = "ore";
+                    tile.type = "ore";
                     break;
                 case "w":
-                    tile.tileType = "sheep";
+                    tile.type = "sheep";
             }
 
             let value = 0;
 
-            if (tile.tileType === "desert") {
+            if (tile.type === "desert") {
                 desert += 1;
             } else {
                 value = numberTokens[index - desert];
@@ -363,7 +363,7 @@ export class ScenarioBuilder {
             board.tiles.push({
                 id: tile.id,
                 center: tile.center,
-                type: tile.tileType,
+                type: tile.type,
                 value: value,
             });
         });

@@ -12,7 +12,6 @@ export interface Tile {
     center: Coordinates;
     type?: string;
     value?: number;
-    tileType?: string;
 }
 
 export interface Corner {
