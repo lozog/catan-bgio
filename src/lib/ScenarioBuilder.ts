@@ -110,7 +110,7 @@ export class ScenarioBuilder {
         const max = Math.max(...counts);
         const maxIndex = counts.indexOf(max) % 2;
 
-        tiles.forEach(function (row, index) {
+        tiles.forEach((row, index) => {
             const length = index % 2 === maxIndex ? max : max - 1;
             const add = length - row.length;
             for (let i = 0; i < add; i++) {
@@ -145,25 +145,25 @@ export class ScenarioBuilder {
 
     processCorners(board: Board, corners: Coordinates[]) {
         const processedCorners = _.chain(corners)
-            .map(function (corner) {
+            .map((corner) => {
                 return {
                     point: corner,
                     x: MathHelper.round(corner.x, 0),
                     y: MathHelper.round(corner.y, 0),
                 };
             })
-            .uniqBy(function (corner) {
+            .uniqBy((corner) => {
                 return corner.x + "," + corner.y;
             })
-            .sortBy(function (corner) {
+            .sortBy((corner) => {
                 return corner.x;
             })
-            .sortBy(function (corner) {
+            .sortBy((corner) => {
                 return corner.y;
             })
             .value();
 
-        processedCorners.forEach(function (corner, index) {
+        processedCorners.forEach((corner, index) => {
             const cornerId = "C" + (index + 1);
             board.corners.push({
                 id: cornerId,
@@ -175,7 +175,7 @@ export class ScenarioBuilder {
 
     processEdges(board: Board, edges: Omit<Edge, "id">[]) {
         const processedEdges = _.chain(edges)
-            .map(function (edge) {
+            .map((edge) => {
                 return {
                     center: edge.center,
                     ends: edge.ends,
@@ -183,18 +183,18 @@ export class ScenarioBuilder {
                     y: MathHelper.round(edge.center.y, 0),
                 };
             })
-            .uniqBy(function (edge) {
+            .uniqBy((edge) => {
                 return edge.x + "," + edge.y;
             })
-            .sortBy(function (edge) {
+            .sortBy((edge) => {
                 return edge.x;
             })
-            .sortBy(function (edge) {
+            .sortBy((edge) => {
                 return edge.y;
             })
             .value();
 
-        processedEdges.forEach(function (edge, index) {
+        processedEdges.forEach((edge, index) => {
             const edgeId = "E" + (index + 1);
             board.edges.push({
                 id: edgeId,
@@ -233,8 +233,6 @@ export class ScenarioBuilder {
     }
 
     buildGameState(): GameState {
-        const circumradius = this.circumradius;
-        const apothem = this.apothem;
         const layout = this.getLayout();
         const numberTokens = layout.numberTokens;
         const terrainTiles = layout.terrainTiles.split(",");
@@ -254,15 +252,15 @@ export class ScenarioBuilder {
         //   terrainTiles = _.shuffle(terrainTiles);
         // }
 
-        tileLayout.tiles.forEach(function (tiles, i) {
-            tiles.forEach(function (tile, j) {
+        tileLayout.tiles.forEach((tiles, i) => {
+            tiles.forEach((tile, j) => {
                 if (tile === "" || tile === "-") {
                     return;
                 }
 
                 tileId++;
-                const x = tileLayout.offsetX[i % 2] + circumradius * 3 * j;
-                const y = apothem * i + tileLayout.offsetY;
+                const x = tileLayout.offsetX[i % 2] + this.circumradius * 3 * j;
+                const y = this.apothem * i + tileLayout.offsetY;
                 const center = {
                     x: MathHelper.round(x, 3),
                     y: MathHelper.round(y, 3),
@@ -292,7 +290,7 @@ export class ScenarioBuilder {
             edges: [],
         };
 
-        seaTiles.forEach(function (tile) {
+        seaTiles.forEach((tile) => {
             board.tiles.push({
                 id: tile.id,
                 center: tile.center,
@@ -301,7 +299,7 @@ export class ScenarioBuilder {
             });
         });
 
-        resourceTiles.forEach(function (tile, index) {
+        resourceTiles.forEach((tile, index) => {
             switch (terrainTiles[index]) {
                 case "d":
                     tile.tileType = "desert";
@@ -332,23 +330,31 @@ export class ScenarioBuilder {
 
             for (let angle = 0; angle <= 300; angle += 60) {
                 cornerCenters.push(
-                    MathHelper.getEndpoint(tile.center, angle, circumradius)
+                    MathHelper.getEndpoint(
+                        tile.center,
+                        angle,
+                        this.circumradius
+                    )
                 );
             }
 
             for (let angle = 30; angle <= 330; angle += 60) {
                 edges.push({
-                    center: MathHelper.getEndpoint(tile.center, angle, apothem),
+                    center: MathHelper.getEndpoint(
+                        tile.center,
+                        angle,
+                        this.apothem
+                    ),
                     ends: [
                         MathHelper.getEndpoint(
                             tile.center,
                             angle - 30,
-                            circumradius
+                            this.circumradius
                         ),
                         MathHelper.getEndpoint(
                             tile.center,
                             angle + 30,
-                            circumradius
+                            this.circumradius
                         ),
                     ],
                 });
