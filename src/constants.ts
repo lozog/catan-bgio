@@ -13,7 +13,7 @@ enum Color {
     player5 = "white",
 }
 
-export const RESOURCE_COLORS = {
+export const TILE_COLORS = {
     wood: Color.wood,
     brick: Color.brick,
     ore: Color.ore,

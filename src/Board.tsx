@@ -1,7 +1,7 @@
 import type { BoardProps } from "boardgame.io/dist/types/packages/react";
 import { GameState } from "./lib/types";
 import "./Board.css";
-import { BOARD_OFFSET, RESOURCE_COLORS } from "./constants";
+import { BOARD_OFFSET, TILE_COLORS } from "./constants";
 
 export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
     const onClickBoardPiece = (id?: string) => moves.onClickBoardPiece(id);
@@ -26,8 +26,8 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
                     top: tile.center.y + BOARD_OFFSET,
                     left: tile.center.x + BOARD_OFFSET,
                     backgroundColor:
-                        RESOURCE_COLORS[
-                            (tile.type ?? "sea") as keyof typeof RESOURCE_COLORS
+                        TILE_COLORS[
+                            (tile.type ?? "sea") as keyof typeof TILE_COLORS
                         ],
                 }}
                 className="hexagon"
