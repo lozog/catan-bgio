@@ -172,7 +172,7 @@ export class ScenarioBuilder {
         });
     }
 
-    processEdges(board: Board, edges: Edge[]) {
+    processEdges(board: Board, edges: Omit<Edge, "id">[]) {
         const edges1 = _.chain(edges)
             .map(function (edge) {
                 return {
@@ -214,8 +214,8 @@ export class ScenarioBuilder {
         const resourceTiles: Tile[] = [];
         let tileId = 0;
         let desert = 0;
-        const corners: Coordinates[] = []; // TODO: these not being typed as Corner is confusing
-        const edges: Edge[] = [];
+        const cornerCenters: Coordinates[] = [];
+        const edges: Omit<Edge, "id">[] = [];
 
         // if (this.options.shuffleNumberTokens) {
         //   numberTokens = _.shuffle(numberTokens);
@@ -303,7 +303,7 @@ export class ScenarioBuilder {
             }
 
             for (angle = 0; angle <= 300; angle += 60) {
-                corners.push(
+                cornerCenters.push(
                     MathHelper.getEndpoint(tile.center, angle, circumradius)
                 );
             }
@@ -334,7 +334,7 @@ export class ScenarioBuilder {
             });
         });
 
-        this.processCorners(board, corners);
+        this.processCorners(board, cornerCenters);
         this.processEdges(board, edges);
 
         const players: Player[] = [];

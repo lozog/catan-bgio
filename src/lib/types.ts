@@ -1,7 +1,7 @@
 import { Coordinates } from "./MathHelper";
 
 export interface Edge {
-    id?: string; // TODO: should be required
+    id: string;
     center: Coordinates;
     ends: Coordinates[];
     player?: string;
@@ -16,9 +16,10 @@ export interface Tile {
 }
 
 export interface Corner {
-    id?: string; // TODO: should be required
+    id: string;
     center: Coordinates;
     player?: string;
+    tiles?: string[];
 }
 
 export interface Layout {
