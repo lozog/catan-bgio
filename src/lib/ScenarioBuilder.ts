@@ -144,7 +144,7 @@ export class ScenarioBuilder {
     }
 
     processCorners(board: Board, corners: Coordinates[]) {
-        const corners1 = _.chain(corners)
+        const processedCorners = _.chain(corners)
             .map(function (corner) {
                 return {
                     point: corner,
@@ -163,7 +163,7 @@ export class ScenarioBuilder {
             })
             .value();
 
-        corners1.forEach(function (corner, index) {
+        processedCorners.forEach(function (corner, index) {
             const cornerId = "C" + (index + 1);
             board.corners.push({
                 id: cornerId,
@@ -173,7 +173,7 @@ export class ScenarioBuilder {
     }
 
     processEdges(board: Board, edges: Omit<Edge, "id">[]) {
-        const edges1 = _.chain(edges)
+        const processedEdges = _.chain(edges)
             .map(function (edge) {
                 return {
                     center: edge.center,
@@ -193,7 +193,7 @@ export class ScenarioBuilder {
             })
             .value();
 
-        edges1.forEach(function (edge, index) {
+        processedEdges.forEach(function (edge, index) {
             const edgeId = "E" + (index + 1);
             board.edges.push({
                 id: edgeId,
