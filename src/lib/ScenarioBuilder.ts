@@ -105,13 +105,8 @@ export class ScenarioBuilder {
     }
 
     getTileLayout(layout: Layout) {
-        const circumradius = this.circumradius;
-        const apothem = this.apothem;
-
         const tiles = layout.tiles.map((row) => row.split(","));
-
         const counts = tiles.map((row) => row.length);
-
         const max = Math.max(...counts);
         const maxIndex = counts.indexOf(max) % 2;
 
@@ -123,15 +118,15 @@ export class ScenarioBuilder {
             }
         });
 
-        const boardHeight = apothem * (tiles.length + 1);
+        const boardHeight = this.apothem * (tiles.length + 1);
         const boardWidth = (max * 2 + (max - 1)) * this.circumradius;
-        const maxOffsetX = -(boardWidth / 2 - circumradius);
-        const minOffsetX = circumradius * 1.5 + maxOffsetX;
+        const maxOffsetX = -(boardWidth / 2 - this.circumradius);
+        const minOffsetX = this.circumradius * 1.5 + maxOffsetX;
         const offsetX = [
             maxIndex === 0 ? maxOffsetX : minOffsetX,
             maxIndex === 1 ? maxOffsetX : minOffsetX,
         ];
-        const offsetY = -(boardHeight / 2 - apothem);
+        const offsetY = -(boardHeight / 2 - this.apothem);
 
         return {
             firstRowIsMax: maxIndex === 0,
