@@ -147,6 +147,7 @@ export const HexGame: Game<GameState> = {
         main: {
             moves: {
                 rollDice: ({ G, playerID, random }) => {
+                    if (G.diceRoll.length !== 0) return INVALID_MOVE;
                     G.diceRoll = random.D6(2);
                 },
                 endTurn: ({ G, playerId, events }) => {
