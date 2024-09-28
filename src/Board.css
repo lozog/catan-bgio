@@ -1,3 +1,8 @@
+.board {
+    position: relative;
+    height: 700px; /* TODO: since the tiles are positioned absolutely, they have no height */
+}
+
 .hexagon {
     cursor: pointer;
     position: absolute;

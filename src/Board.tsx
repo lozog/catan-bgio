@@ -6,16 +6,6 @@ import { BOARD_OFFSET, TILE_COLORS } from "./constants";
 export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
     const onClickBoardPiece = (id?: string) => moves.onClickBoardPiece(id);
 
-    let winner;
-    if (ctx.gameover) {
-        winner =
-            ctx.gameover.winner !== undefined ? (
-                <div id="winner">Winner: {ctx.gameover.winner}</div>
-            ) : (
-                <div id="winner">Draw!</div>
-            );
-    }
-
     const tiles = [];
     for (const tile of G.board.tiles) {
         tiles.push(
@@ -23,8 +13,8 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
                 key={tile.id}
                 onClick={() => onClickBoardPiece(tile.id)}
                 style={{
-                    top: tile.center.y + BOARD_OFFSET,
-                    left: tile.center.x + BOARD_OFFSET,
+                    top: tile.center.y,
+                    left: tile.center.x,
                     backgroundColor:
                         TILE_COLORS[
                             (tile.type ?? "sea") as keyof typeof TILE_COLORS
@@ -46,8 +36,8 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
                 onClick={() => onClickBoardPiece(corner.id)}
                 className="corner"
                 style={{
-                    top: corner.center.y + BOARD_OFFSET,
-                    left: corner.center.x + BOARD_OFFSET,
+                    top: corner.center.y,
+                    left: corner.center.x,
                     backgroundColor: player?.color,
                     color: "white",
                     fontSize: "8px",
@@ -75,8 +65,8 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
                 className="edge"
                 style={{
                     width: length,
-                    left: centerX + BOARD_OFFSET,
-                    top: centerY + BOARD_OFFSET,
+                    left: centerX,
+                    top: centerY,
                     transform: `translate(-50%, -50%) rotate(${angle}deg)`,
                     backgroundColor: player?.color,
                 }}
@@ -86,10 +76,20 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
 
     return (
         <div>
-            {tiles}
-            {edges}
-            {corners}
-            {winner}
+            <div
+                className="board"
+                style={{ top: BOARD_OFFSET, left: BOARD_OFFSET }}
+            >
+                {tiles}
+                {edges}
+                {corners}
+            </div>
+
+            <div className="controls">
+                <button>Roll dice</button>
+                <button disabled>Build</button>
+                <button disabled>Trade</button>
+            </div>
         </div>
     );
 }
