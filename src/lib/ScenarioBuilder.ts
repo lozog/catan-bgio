@@ -207,6 +207,7 @@ export class ScenarioBuilder {
     /**
      * for each resource tile, find all adjacent corners and
      * add the tile to the corner's tile list
+     * and the corner to the tile's corner list
      */
     processCornerAdjacency(board: Board) {
         board.tiles.forEach((tile) => {
@@ -230,6 +231,7 @@ export class ScenarioBuilder {
                     continue;
                 }
                 corner.tiles.push(tile.id);
+                tile.corners.push(corner.id);
                 // console.log(`found corner ${corner?.id} for tile ${tile.id}`);
             }
         });
@@ -274,11 +276,13 @@ export class ScenarioBuilder {
                     resourceTiles[tileNo] = {
                         id: "T" + tileId,
                         center: center,
+                        corners: [],
                     };
                 } else {
                     seaTiles.push({
                         id: "T" + tileId,
                         center: center,
+                        corners: [],
                     });
                 }
             });
@@ -298,6 +302,7 @@ export class ScenarioBuilder {
                 id: tile.id,
                 center: tile.center,
                 type: "sea",
+                corners: [],
             });
         });
 
@@ -367,6 +372,7 @@ export class ScenarioBuilder {
                 center: tile.center,
                 type: tile.type,
                 value,
+                corners: [],
             });
         });
 

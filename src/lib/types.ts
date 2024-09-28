@@ -12,8 +12,9 @@ export interface Edge {
 export interface Tile {
     id: string;
     center: Coordinates;
-    type?: TileType;
-    value?: number;
+    type?: TileType; // TODO: assigned after initialization
+    value?: number; // TODO: only valid for resource tiles
+    corners: string[]; // TODO: only valid for resource tiles
 }
 
 export interface Corner {

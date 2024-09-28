@@ -102,7 +102,7 @@ export const HexGame: Game<GameState> = {
                             if (corner.player) {
                                 return INVALID_MOVE;
                             }
-                            corner.player = playerID;
+                            corner.player = playerID; // TODO: player can have a settlement or city on a corner
                             player.settlements.push(corner.id!);
 
                             corner.tiles.forEach((tileId) => {
@@ -149,6 +149,31 @@ export const HexGame: Game<GameState> = {
                 rollDice: ({ G, playerID, random }) => {
                     if (G.diceRoll.length !== 0) return INVALID_MOVE;
                     G.diceRoll = random.D6(2);
+                    const diceTotal = G.diceRoll[0] + G.diceRoll[1];
+                    console.log(`Rolled a ${diceTotal}`);
+
+                    // hand out all resources
+                    for (const tile of G.board.tiles) {
+                        if (!(tile.value === diceTotal)) continue;
+
+                        for (const cornerId of tile.corners) {
+                            const corner = findCorner(G, cornerId);
+                            if (corner.player) {
+                                // TODO: check for cities
+                                const player = findPlayer(G, corner.player);
+                                if (!tile.type) {
+                                    // TODO: make type required
+                                    throw new Error(
+                                        `Tile ${tile.id} has no type`
+                                    );
+                                }
+                                player.hand[tile.type as keyof Hand] += 1;
+                                console.log(
+                                    `Giving player ${player.id} a ${tile.type}`
+                                );
+                            }
+                        }
+                    }
                 },
                 endTurn: ({ G, playerId, events }) => {
                     G.diceRoll = [];
