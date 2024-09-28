@@ -76,4 +76,5 @@ export interface GameState {
     board: Board;
     victoryPoints: number;
     players: Player[];
+    diceRoll: number[];
 }

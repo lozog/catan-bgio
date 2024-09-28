@@ -397,6 +397,7 @@ export class ScenarioBuilder {
             board,
             victoryPoints: this.scenario.victoryPoints,
             players,
+            diceRoll: [],
         };
     }
 }

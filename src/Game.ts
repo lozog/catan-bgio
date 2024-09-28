@@ -78,6 +78,7 @@ export const HexGame: Game<GameState> = {
             },
         },
         setupReverse: {
+            next: "main",
             turn: {
                 order: {
                     first: ({ G, ctx }) => ctx.numPlayers - 1,
@@ -140,6 +141,17 @@ export const HexGame: Game<GameState> = {
                             return INVALID_MOVE;
                         }
                     }
+                },
+            },
+        },
+        main: {
+            moves: {
+                rollDice: ({ G, playerID, random }) => {
+                    G.diceRoll = random.D6(2);
+                },
+                endTurn: ({ G, playerId, events }) => {
+                    G.diceRoll = [];
+                    events.endTurn();
                 },
             },
         },

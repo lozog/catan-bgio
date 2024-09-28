@@ -78,7 +78,11 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
         <div>
             <div
                 className="board"
-                style={{ top: BOARD_OFFSET, left: BOARD_OFFSET }}
+                style={{
+                    top: BOARD_OFFSET,
+                    left: BOARD_OFFSET,
+                    height: G.board.height,
+                }}
             >
                 {tiles}
                 {edges}
@@ -86,9 +90,10 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
             </div>
 
             <div className="controls">
-                <button>Roll dice</button>
+                <button onClick={() => moves.rollDice()}>Roll dice</button>
                 <button disabled>Build</button>
                 <button disabled>Trade</button>
+                <button onClick={() => moves.endTurn()}>End turn</button>
             </div>
         </div>
     );
