@@ -2,9 +2,12 @@ import type { BoardProps } from "boardgame.io/dist/types/packages/react";
 import { GameState } from "./lib/types";
 import "./Board.css";
 import { BOARD_OFFSET, TILE_COLORS } from "./constants";
+import { findPlayer } from "./lib/helpers";
 
 export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
     const onClickBoardPiece = (id?: string) => moves.onClickBoardPiece(id);
+
+    const currentPlayer = findPlayer(G, ctx.currentPlayer);
 
     const tiles = [];
     for (const tile of G.board.tiles) {
@@ -95,6 +98,20 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
                 <button disabled>Build</button>
                 <button disabled>Trade</button>
                 <button onClick={() => moves.endTurn()}>End turn</button>
+            </div>
+            <div className="turn-info">
+                <div>Current phase: {ctx.phase}</div>
+                <div>Current player: {ctx.currentPlayer}</div>
+
+                <div>
+                    Roll:{" "}
+                    {G.diceRoll.length ? G.diceRoll[0] + G.diceRoll[1] : "--"}
+                </div>
+                <div>wood: {currentPlayer.hand["wood"]}</div>
+                <div>brick: {currentPlayer.hand["brick"]}</div>
+                <div>sheep: {currentPlayer.hand["sheep"]}</div>
+                <div>wheat: {currentPlayer.hand["wheat"]}</div>
+                <div>ore: {currentPlayer.hand["ore"]}</div>
             </div>
         </div>
     );

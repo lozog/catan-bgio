@@ -150,7 +150,7 @@ export const HexGame: Game<GameState> = {
                     if (G.diceRoll.length !== 0) return INVALID_MOVE;
                     G.diceRoll = random.D6(2);
                     const diceTotal = G.diceRoll[0] + G.diceRoll[1];
-                    console.log(`Rolled a ${diceTotal}`);
+                    console.log(`Rolled ${diceTotal}`);
 
                     // hand out all resources
                     for (const tile of G.board.tiles) {
@@ -169,13 +169,14 @@ export const HexGame: Game<GameState> = {
                                 }
                                 player.hand[tile.type as keyof Hand] += 1;
                                 console.log(
-                                    `Giving player ${player.id} a ${tile.type}`
+                                    `Giving ${tile.type} to player ${player.id}`
                                 );
                             }
                         }
                     }
                 },
                 endTurn: ({ G, playerId, events }) => {
+                    if (G.diceRoll.length === 0) return INVALID_MOVE;
                     G.diceRoll = [];
                     events.endTurn();
                 },
