@@ -23,6 +23,7 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
                 className="hexagon"
             >
                 {tile.id}
+                <div className="tile-value">{tile.value}</div>
             </div>
         );
     }

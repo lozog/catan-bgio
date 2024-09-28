@@ -2,11 +2,18 @@
     position: relative;
 }
 
+.tile-value {
+    line-height: normal;
+    font-size: 20px;
+    font-weight: bold;
+    color: #efefef;
+}
+
 .hexagon {
     cursor: pointer;
     position: absolute;
     width: 100px; /* hexagon size */
-    line-height: 64px;
+    line-height: 32px;
     text-align: center;
 
     /* define hexagon shape */

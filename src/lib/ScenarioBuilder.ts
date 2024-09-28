@@ -298,7 +298,6 @@ export class ScenarioBuilder {
                 id: tile.id,
                 center: tile.center,
                 type: "sea",
-                value: 0,
             });
         });
 
@@ -367,7 +366,7 @@ export class ScenarioBuilder {
                 id: tile.id,
                 center: tile.center,
                 type: tile.type,
-                value: value,
+                value,
             });
         });
 
