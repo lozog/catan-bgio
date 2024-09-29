@@ -1,6 +1,6 @@
 import { Game } from "boardgame.io";
 import { ScenarioBuilder } from "./lib/ScenarioBuilder";
-import { GameState, Hand } from "./lib/types";
+import { Corner, GameState, Hand, Player } from "./lib/types";
 import { INVALID_MOVE } from "boardgame.io/core";
 import {
     findCorner,
@@ -32,6 +32,9 @@ function handOutResources(G: GameState, diceTotal: number) {
     }
 }
 
+/**
+ * @returns false if invalid move
+ */
 function placeSettlement(
     G: GameState,
     cornerId: string,
@@ -50,6 +53,33 @@ function placeSettlement(
     const player = findPlayer(G, playerId);
     player.settlements.push(corner.id!);
 
+    return true;
+}
+
+/**
+ * @returns false if invalid move
+ */
+function placeRoad(
+    G: GameState,
+    edgeId: string,
+    player: Player,
+    adjacentCorner?: Corner
+): boolean {
+    if (!isEdge(edgeId)) return false;
+    const edge = findEdge(G, edgeId);
+
+    if (edge.player) {
+        return false;
+    }
+
+    if (adjacentCorner) {
+        if (!isEdgeAdjacentToCorner(edge, adjacentCorner)) {
+            return false;
+        }
+    }
+
+    edge.player = player.id;
+    player.roads.push(edge.id!);
     return true;
 }
 
@@ -84,27 +114,15 @@ export const HexGame: Game<GameState> = {
                         if (!placeSettlement(G, id, playerID))
                             return INVALID_MOVE;
                     } else {
-                        if (isEdge(id)) {
-                            const edge = findEdge(G, id);
-
-                            if (edge.player) {
-                                return INVALID_MOVE;
-                            }
-
-                            if (
-                                !isEdgeAdjacentToCorner(
-                                    edge,
-                                    findCorner(G, player.settlements[0])
-                                )
-                            ) {
-                                return INVALID_MOVE;
-                            }
-
-                            edge.player = playerID;
-                            player.roads.push(edge.id!);
-                        } else {
+                        if (
+                            !placeRoad(
+                                G,
+                                id,
+                                player,
+                                findCorner(G, player.settlements[0])
+                            )
+                        )
                             return INVALID_MOVE;
-                        }
                     }
                 },
             },
@@ -143,27 +161,15 @@ export const HexGame: Game<GameState> = {
                             player.hand[tile.type as keyof Hand]++;
                         });
                     } else {
-                        if (isEdge(id)) {
-                            const edge = findEdge(G, id);
-
-                            if (edge.player) {
-                                return INVALID_MOVE;
-                            }
-
-                            if (
-                                !isEdgeAdjacentToCorner(
-                                    edge,
-                                    findCorner(G, player.settlements[1])
-                                )
-                            ) {
-                                return INVALID_MOVE;
-                            }
-
-                            edge.player = playerID;
-                            player.roads.push(edge.id!);
-                        } else {
+                        if (
+                            !placeRoad(
+                                G,
+                                id,
+                                player,
+                                findCorner(G, player.settlements[1])
+                            )
+                        )
                             return INVALID_MOVE;
-                        }
                     }
                 },
             },
