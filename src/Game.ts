@@ -1,6 +1,6 @@
 import { Game } from "boardgame.io";
 import { ScenarioBuilder } from "./lib/ScenarioBuilder";
-import { Corner, GameState, Hand, Player, Tile } from "./lib/types";
+import { Corner, GameState, Hand, Player } from "./lib/types";
 import { INVALID_MOVE } from "boardgame.io/core";
 import {
     findCorner,
@@ -23,13 +23,13 @@ function distributeResources(G: GameState, roll: number) {
         for (const cornerId of tile.corners) {
             const corner = findCorner(G, cornerId);
             if (corner.player) {
-                // TODO: check for cities
                 const player = findPlayer(G, corner.player);
                 if (!tile.type) {
                     // TODO: make type required
                     throw new Error(`Tile ${tile.id} has no type`);
                 }
-                player.hand[tile.type as keyof Hand] += 1;
+                player.hand[tile.type as keyof Hand] +=
+                    corner.building === "settlement" ? 1 : 2;
                 console.log(`Giving ${tile.type} to player ${player.id}`);
             }
         }
@@ -70,6 +70,7 @@ function placeSettlement(
     // TODO: settlement must be two places away from any others
 
     corner.player = player.id;
+    corner.building = "settlement";
     player.settlements.push(corner.id!);
 
     return true;

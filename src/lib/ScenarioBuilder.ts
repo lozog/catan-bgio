@@ -169,6 +169,7 @@ export class ScenarioBuilder {
                 id: cornerId,
                 center: corner.point,
                 tiles: [],
+                building: null,
             });
         });
     }
