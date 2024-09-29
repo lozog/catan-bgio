@@ -81,14 +81,20 @@ function placeSettlement(
 }
 
 /**
- * @returns false if invalid move
+ *
+ * @param G
+ * @param edgeId
+ * @param player
+ * @param playerEdges list of edge Ids currently owned by player. edgeId must be adjacent to one of these
+ * @param adjacentCorner used for setup phases - edge must be adjacent to corner if passed
+ * @returns true if road was successfully placed, false otherwise
  */
 function placeRoad(
     G: GameState,
     edgeId: string,
     player: Player,
-    adjacentCorners: Corner[], // TODO: this doesn't need to be a list, but it could be optional
-    playerEdges?: string[]
+    playerEdges: string[],
+    adjacentCorner?: Corner
 ): boolean {
     if (!isEdge(edgeId)) return false;
     const edge = getEdge(G, edgeId);
@@ -98,7 +104,7 @@ function placeRoad(
         return false;
     }
 
-    for (const adjacentCorner of adjacentCorners) {
+    if (adjacentCorner) {
         if (!isEdgeAdjacentToCorner(edge, adjacentCorner)) {
             console.log(
                 `edge ${edgeId} not adjacent to corner ${adjacentCorner.id}`
@@ -107,7 +113,7 @@ function placeRoad(
         }
     }
 
-    if (playerEdges) {
+    if (playerEdges.length > 0) {
         const isThisEdgeAdjacentToPlayerEdges = playerEdges.find((id) => {
             const e = getEdge(G, id);
             return !!e.adjacentEdges.find((id) => id === edgeId);
@@ -188,9 +194,13 @@ export const HexGame: Game<GameState> = {
 
                     if (player.settlements.length === 0) return INVALID_MOVE;
                     if (
-                        !placeRoad(G, id, player, [
-                            getCorner(G, player.settlements[0]),
-                        ])
+                        !placeRoad(
+                            G,
+                            id,
+                            player,
+                            [],
+                            getCorner(G, player.settlements[0])
+                        )
                     )
                         return INVALID_MOVE;
                 },
@@ -229,9 +239,13 @@ export const HexGame: Game<GameState> = {
 
                     if (player.settlements.length === 1) return INVALID_MOVE;
                     if (
-                        !placeRoad(G, id, player, [
-                            getCorner(G, player.settlements[1]),
-                        ])
+                        !placeRoad(
+                            G,
+                            id,
+                            player,
+                            [],
+                            getCorner(G, player.settlements[1])
+                        )
                     )
                         return INVALID_MOVE;
                 },
@@ -272,7 +286,7 @@ export const HexGame: Game<GameState> = {
                     if (!purchaseIfSufficientResources(G, player, "road"))
                         return INVALID_MOVE;
 
-                    if (!placeRoad(G, id, player, [], player.roads))
+                    if (!placeRoad(G, id, player, player.roads))
                         return INVALID_MOVE;
                 },
             },
