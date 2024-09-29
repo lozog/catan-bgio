@@ -10,7 +10,7 @@ import {
     Player,
 } from "./types";
 import { PLAYER_COLORS } from "../constants";
-import { findAdjacentCorners } from "./helpers";
+import { findAdjacentCorners, findAdjacentEdges } from "./helpers";
 
 const DEFAULT_SCENARIO: Scenario = {
     name: "Base game",
@@ -176,7 +176,7 @@ export class ScenarioBuilder {
         });
     }
 
-    processEdges(board: Board, edges: Omit<Edge, "id">[]) {
+    processEdges(board: Board, edges: Omit<Edge, "id" | "adjacentEdges">[]) {
         const processedEdges = _.chain(edges)
             .map((edge) => {
                 return {
@@ -203,6 +203,7 @@ export class ScenarioBuilder {
                 id: edgeId,
                 center: edge.center,
                 ends: edge.ends,
+                adjacentEdges: [],
             });
         });
     }
@@ -251,6 +252,16 @@ export class ScenarioBuilder {
         });
     }
 
+    processEdgeAdjacency(board: Board) {
+        board.edges.forEach((edge) => {
+            edge.adjacentEdges = findAdjacentEdges(
+                edge,
+                board.edges,
+                board.corners
+            );
+        });
+    }
+
     buildGameState(): GameState {
         const layout = this.getLayout();
         const numberTokens = layout.numberTokens;
@@ -261,7 +272,7 @@ export class ScenarioBuilder {
         let tileId = 0;
         let desert = 0;
         const cornerCenters: Coordinates[] = [];
-        const edges: Omit<Edge, "id">[] = [];
+        const edges: Omit<Edge, "id" | "adjacentEdges">[] = [];
 
         // if (this.options.shuffleNumberTokens) {
         //   numberTokens = _.shuffle(numberTokens);
@@ -394,6 +405,7 @@ export class ScenarioBuilder {
         this.processEdges(board, edges);
         this.processTileCornerAdjacency(board);
         this.processCornerAdjacency(board);
+        this.processEdgeAdjacency(board);
 
         const players: Player[] = [];
         for (let i = 0; i < this.numPlayers; i++) {

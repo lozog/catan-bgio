@@ -50,6 +50,15 @@ export function isEdgeAdjacentToCorner(edge: Edge, corner: Corner): boolean {
     );
 }
 
+export function isEdgeAdjacentToEdge(edge1: Edge, edge2: Edge): boolean {
+    return (
+        MathHelper.areCoordinatesEqual(edge1.ends[0], edge2.ends[0]) ||
+        MathHelper.areCoordinatesEqual(edge1.ends[1], edge2.ends[0]) ||
+        MathHelper.areCoordinatesEqual(edge1.ends[0], edge2.ends[1]) ||
+        MathHelper.areCoordinatesEqual(edge1.ends[1], edge2.ends[1])
+    );
+}
+
 function findCornerByCoordinates(
     corners: Corner[],
     coordinates: Coordinates
@@ -79,4 +88,16 @@ export function findAdjacentCorners(
         }
     });
     return adjacentCorners;
+}
+
+export function findAdjacentEdges(
+    edge: Edge,
+    edges: Edge[],
+    corners: Corner[]
+): string[] {
+    return edges
+        .filter((e) => {
+            return isEdgeAdjacentToEdge(edge, e);
+        })
+        .map((e) => e.id);
 }

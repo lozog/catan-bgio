@@ -8,6 +8,7 @@ export interface Edge {
     center: Coordinates;
     ends: Coordinates[];
     player?: string;
+    adjacentEdges: string[];
 }
 
 export interface Tile {
