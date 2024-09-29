@@ -10,6 +10,7 @@ import {
     Player,
 } from "./types";
 import { PLAYER_COLORS } from "../constants";
+import { findAdjacentCorners } from "./helpers";
 
 const DEFAULT_SCENARIO: Scenario = {
     name: "Base game",
@@ -170,6 +171,7 @@ export class ScenarioBuilder {
                 center: corner.point,
                 tiles: [],
                 building: null,
+                adjacentCorners: [],
             });
         });
     }
@@ -210,7 +212,7 @@ export class ScenarioBuilder {
      * add the tile to the corner's tile list
      * and the corner to the tile's corner list
      */
-    processCornerAdjacency(board: Board) {
+    processTileCornerAdjacency(board: Board) {
         board.tiles.forEach((tile) => {
             if (
                 !["wood", "ore", "brick", "wheat", "sheep"].includes(
@@ -235,6 +237,17 @@ export class ScenarioBuilder {
                 tile.corners.push(corner.id);
                 // console.log(`found corner ${corner?.id} for tile ${tile.id}`);
             }
+        });
+    }
+
+    processCornerAdjacency(board: Board) {
+        board.corners.forEach((corner) => {
+            corner.adjacentCorners = findAdjacentCorners(
+                corner,
+                board.edges,
+                board.corners
+            );
+            // console.log(`found ${res.length} adjacent for corner ${corner.id}`);
         });
     }
 
@@ -379,6 +392,7 @@ export class ScenarioBuilder {
 
         this.processCorners(board, cornerCenters);
         this.processEdges(board, edges);
+        this.processTileCornerAdjacency(board);
         this.processCornerAdjacency(board);
 
         const players: Player[] = [];

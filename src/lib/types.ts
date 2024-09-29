@@ -23,6 +23,7 @@ export interface Corner {
     center: Coordinates;
     player?: string;
     tiles: string[];
+    adjacentCorners: string[];
     building: Building | null;
 }
 

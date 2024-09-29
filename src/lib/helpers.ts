@@ -51,28 +51,32 @@ export function isEdgeAdjacentToCorner(edge: Edge, corner: Corner): boolean {
 }
 
 function findCornerByCoordinates(
-    G: GameState,
+    corners: Corner[],
     coordinates: Coordinates
 ): Corner | undefined {
-    return G.board.corners.find((c) =>
+    return corners.find((c) =>
         MathHelper.areCoordinatesEqual(coordinates, c.center)
     );
 }
 
-export function findAdjacentCorners(G: GameState, corner: Corner): Corner[] {
-    const adjacentEdges = G.board.edges.filter((edge) => {
+export function findAdjacentCorners(
+    corner: Corner,
+    edges: Edge[],
+    corners: Corner[]
+): string[] {
+    const adjacentEdges = edges.filter((edge) => {
         return isEdgeAdjacentToCorner(edge, corner);
     });
 
     // find corners at other end of adjacent edge
-    const adjacentCornerCoords: Corner[] = [];
+    const adjacentCorners: string[] = [];
     adjacentEdges.forEach((edge) => {
         for (const end of edge.ends) {
             if (MathHelper.areCoordinatesEqual(end, corner.center)) continue;
 
-            const adjacentCorner = findCornerByCoordinates(G, end);
-            if (adjacentCorner) adjacentCornerCoords.push(adjacentCorner);
+            const adjacentCorner = findCornerByCoordinates(corners, end);
+            if (adjacentCorner) adjacentCorners.push(adjacentCorner.id);
         }
     });
-    return adjacentCornerCoords;
+    return adjacentCorners;
 }

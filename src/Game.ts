@@ -68,9 +68,9 @@ function placeSettlement(
         return false;
     }
 
-    const adjacentCorners = findAdjacentCorners(G, corner);
-    for (const corner of adjacentCorners) {
-        if (corner.player) return false;
+    for (const adjacentCornerId of corner.adjacentCorners) {
+        const adjacentCorner = getCorner(G, adjacentCornerId);
+        if (adjacentCorner.player) return false;
     }
 
     corner.player = player.id;
