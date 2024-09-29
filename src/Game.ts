@@ -12,6 +12,47 @@ import {
     isEdgeAdjacentToCorner,
 } from "./lib/helpers";
 
+function handOutResources(G: GameState, diceTotal: number) {
+    for (const tile of G.board.tiles) {
+        if (!(tile.value === diceTotal)) continue;
+
+        for (const cornerId of tile.corners) {
+            const corner = findCorner(G, cornerId);
+            if (corner.player) {
+                // TODO: check for cities
+                const player = findPlayer(G, corner.player);
+                if (!tile.type) {
+                    // TODO: make type required
+                    throw new Error(`Tile ${tile.id} has no type`);
+                }
+                player.hand[tile.type as keyof Hand] += 1;
+                console.log(`Giving ${tile.type} to player ${player.id}`);
+            }
+        }
+    }
+}
+
+function placeSettlement(
+    G: GameState,
+    cornerId: string,
+    playerId: string
+): boolean {
+    if (!isCorner(cornerId)) return false;
+
+    const corner = findCorner(G, cornerId);
+
+    if (corner.player) {
+        return false;
+    }
+
+    corner.player = playerId;
+
+    const player = findPlayer(G, playerId);
+    player.settlements.push(corner.id!);
+
+    return true;
+}
+
 export const HexGame: Game<GameState> = {
     setup: ({ ctx }) => {
         const scenarioBuilder = new ScenarioBuilder(ctx.numPlayers);
@@ -40,17 +81,8 @@ export const HexGame: Game<GameState> = {
                     const player = findPlayer(G, playerID);
 
                     if (player.settlements.length === 0) {
-                        if (isCorner(id)) {
-                            const corner = findCorner(G, id);
-
-                            if (corner.player) {
-                                return INVALID_MOVE;
-                            }
-                            corner.player = playerID;
-                            player.settlements.push(corner.id!);
-                        } else {
+                        if (!placeSettlement(G, id, playerID))
                             return INVALID_MOVE;
-                        }
                     } else {
                         if (isEdge(id)) {
                             const edge = findEdge(G, id);
@@ -96,28 +128,20 @@ export const HexGame: Game<GameState> = {
                     const player = findPlayer(G, playerID);
 
                     if (player.settlements.length === 1) {
-                        if (isCorner(id)) {
-                            const corner = findCorner(G, id);
-
-                            if (corner.player) {
-                                return INVALID_MOVE;
-                            }
-                            corner.player = playerID; // TODO: player can have a settlement or city on a corner
-                            player.settlements.push(corner.id!);
-
-                            corner.tiles.forEach((tileId) => {
-                                const tile = findTile(G, tileId);
-                                if (!tile.type) {
-                                    throw new Error(
-                                        `Tile ${tile.id} is missing type`
-                                    );
-                                }
-                                if (!(tile.type in player.hand)) return;
-                                player.hand[tile.type as keyof Hand]++;
-                            });
-                        } else {
+                        if (!placeSettlement(G, id, playerID))
                             return INVALID_MOVE;
-                        }
+
+                        const corner = findCorner(G, id);
+                        corner.tiles.forEach((tileId) => {
+                            const tile = findTile(G, tileId);
+                            if (!tile.type) {
+                                throw new Error(
+                                    `Tile ${tile.id} is missing type`
+                                );
+                            }
+                            if (!(tile.type in player.hand)) return;
+                            player.hand[tile.type as keyof Hand]++;
+                        });
                     } else {
                         if (isEdge(id)) {
                             const edge = findEdge(G, id);
@@ -153,27 +177,7 @@ export const HexGame: Game<GameState> = {
                     console.log(`Rolled ${diceTotal}`);
 
                     // hand out all resources
-                    for (const tile of G.board.tiles) {
-                        if (!(tile.value === diceTotal)) continue;
-
-                        for (const cornerId of tile.corners) {
-                            const corner = findCorner(G, cornerId);
-                            if (corner.player) {
-                                // TODO: check for cities
-                                const player = findPlayer(G, corner.player);
-                                if (!tile.type) {
-                                    // TODO: make type required
-                                    throw new Error(
-                                        `Tile ${tile.id} has no type`
-                                    );
-                                }
-                                player.hand[tile.type as keyof Hand] += 1;
-                                console.log(
-                                    `Giving ${tile.type} to player ${player.id}`
-                                );
-                            }
-                        }
-                    }
+                    handOutResources(G, diceTotal);
                 },
                 endTurn: ({ G, playerId, events }) => {
                     if (G.diceRoll.length === 0) return INVALID_MOVE;
