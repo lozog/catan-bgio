@@ -38,7 +38,7 @@ function handOutResources(G: GameState, diceTotal: number) {
 function placeSettlement(
     G: GameState,
     cornerId: string,
-    playerId: string
+    player: Player
 ): boolean {
     if (!isCorner(cornerId)) return false;
 
@@ -48,9 +48,7 @@ function placeSettlement(
         return false;
     }
 
-    corner.player = playerId;
-
-    const player = findPlayer(G, playerId);
+    corner.player = player.id;
     player.settlements.push(corner.id!);
 
     return true;
@@ -111,7 +109,7 @@ export const HexGame: Game<GameState> = {
                     const player = findPlayer(G, playerID);
 
                     if (player.settlements.length === 0) {
-                        if (!placeSettlement(G, id, playerID))
+                        if (!placeSettlement(G, id, player))
                             return INVALID_MOVE;
                     } else {
                         if (
@@ -146,7 +144,7 @@ export const HexGame: Game<GameState> = {
                     const player = findPlayer(G, playerID);
 
                     if (player.settlements.length === 1) {
-                        if (!placeSettlement(G, id, playerID))
+                        if (!placeSettlement(G, id, player))
                             return INVALID_MOVE;
 
                         const corner = findCorner(G, id);
