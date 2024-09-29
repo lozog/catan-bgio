@@ -5,7 +5,8 @@ import { BOARD_OFFSET, TILE_COLORS } from "./constants";
 import { getPlayer } from "./lib/helpers";
 
 export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
-    const onClickBoardPiece = (id?: string) => moves.onClickBoardPiece(id);
+    const onClickCorner = (id?: string) => moves.onBuildSettlement(id);
+    const onClickEdge = (id?: string) => moves.onBuildRoad(id);
 
     const currentPlayer = getPlayer(G, ctx.currentPlayer);
 
@@ -14,7 +15,6 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
         tiles.push(
             <div
                 key={tile.id}
-                onClick={() => onClickBoardPiece(tile.id)}
                 style={{
                     top: tile.center.y,
                     left: tile.center.x,
@@ -37,7 +37,7 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
         corners.push(
             <div
                 key={corner.id}
-                onClick={() => onClickBoardPiece(corner.id)}
+                onClick={() => onClickCorner(corner.id)}
                 className="corner"
                 style={{
                     top: corner.center.y,
@@ -65,7 +65,7 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
         edges.push(
             <div
                 key={edge.id}
-                onClick={() => onClickBoardPiece(edge.id)}
+                onClick={() => onClickEdge(edge.id)}
                 className="edge"
                 style={{
                     width: length,
@@ -95,7 +95,6 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
 
             <div className="controls">
                 <button onClick={() => moves.rollDice()}>Roll dice</button>
-                <button disabled>Build</button>
                 <button disabled>Trade</button>
                 <button onClick={() => moves.endTurn()}>End turn</button>
             </div>

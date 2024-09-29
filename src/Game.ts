@@ -3,7 +3,6 @@ import { ScenarioBuilder } from "./lib/ScenarioBuilder";
 import { Corner, GameState, Hand, Player } from "./lib/types";
 import { INVALID_MOVE } from "boardgame.io/core";
 import {
-    findAdjacentCorners,
     getCorner,
     getEdge,
     getPlayer,
@@ -129,25 +128,29 @@ export const HexGame: Game<GameState> = {
             },
             endIf: ({ G, ctx }) => ctx.turn > ctx.numPlayers,
             moves: {
-                onClickBoardPiece: ({ G, playerID }, id) => {
+                onBuildSettlement: ({ G, playerID }, id) => {
                     console.log(`clicked ${id}`);
 
                     const player = getPlayer(G, playerID);
 
-                    if (player.settlements.length === 0) {
-                        if (!placeSettlement(G, id, player))
-                            return INVALID_MOVE;
-                    } else {
-                        if (
-                            !placeRoad(
-                                G,
-                                id,
-                                player,
-                                getCorner(G, player.settlements[0])
-                            )
+                    if (player.settlements.length !== 0) return INVALID_MOVE;
+                    if (!placeSettlement(G, id, player)) return INVALID_MOVE;
+                },
+                onBuildRoad: ({ G, playerID }, id) => {
+                    console.log(`clicked ${id}`);
+
+                    const player = getPlayer(G, playerID);
+
+                    if (player.settlements.length === 0) return INVALID_MOVE;
+                    if (
+                        !placeRoad(
+                            G,
+                            id,
+                            player,
+                            getCorner(G, player.settlements[0])
                         )
-                            return INVALID_MOVE;
-                    }
+                    )
+                        return INVALID_MOVE;
                 },
             },
         },
@@ -164,30 +167,34 @@ export const HexGame: Game<GameState> = {
             },
             endIf: ({ G, ctx }) => ctx.playOrderPos < 0,
             moves: {
-                onClickBoardPiece: ({ G, playerID }, id) => {
+                onBuildSettlement: ({ G, playerID }, id) => {
                     console.log(`clicked ${id}`);
 
                     const player = getPlayer(G, playerID);
 
-                    if (player.settlements.length === 1) {
-                        if (!placeSettlement(G, id, player))
-                            return INVALID_MOVE;
+                    if (player.settlements.length !== 1) return INVALID_MOVE;
+                    if (!placeSettlement(G, id, player)) return INVALID_MOVE;
 
-                        // give last player their resources
-                        // given a corner, find all adjacent tiles and yield resources
-                        const corner = getCorner(G, id);
-                        yieldResourcesFromTiles(G, corner.tiles, player);
-                    } else {
-                        if (
-                            !placeRoad(
-                                G,
-                                id,
-                                player,
-                                getCorner(G, player.settlements[1])
-                            )
+                    // give last player their resources
+                    // given a corner, find all adjacent tiles and yield resources
+                    const corner = getCorner(G, id);
+                    yieldResourcesFromTiles(G, corner.tiles, player);
+                },
+                onBuildRoad: ({ G, playerID }, id) => {
+                    console.log(`clicked ${id}`);
+
+                    const player = getPlayer(G, playerID);
+
+                    if (player.settlements.length === 1) return INVALID_MOVE;
+                    if (
+                        !placeRoad(
+                            G,
+                            id,
+                            player,
+                            getCorner(G, player.settlements[1])
                         )
-                            return INVALID_MOVE;
-                    }
+                    )
+                        return INVALID_MOVE;
                 },
             },
         },
