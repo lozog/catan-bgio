@@ -48,5 +48,4 @@ export const BUILDING_COSTS = {
     },
 };
 
-// TODO: implement camera
 export const BOARD_OFFSET = 300;

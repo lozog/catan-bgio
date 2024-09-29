@@ -81,13 +81,16 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
 
     return (
         <div className="container">
-            <TransformWrapper limitToBounds={false}>
+            <TransformWrapper
+                limitToBounds={false}
+                initialPositionX={BOARD_OFFSET}
+                initialPositionY={BOARD_OFFSET}
+                maxScale={2.5}
+            >
                 <TransformComponent>
                     <div
                         className="board"
                         style={{
-                            top: BOARD_OFFSET,
-                            left: BOARD_OFFSET,
                             height: G.board.height,
                             width: G.board.width + BOARD_OFFSET,
                         }}
