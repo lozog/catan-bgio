@@ -3,6 +3,7 @@ import { GameState } from "./lib/types";
 import "./Board.css";
 import { BOARD_OFFSET, TILE_COLORS } from "./constants";
 import { getPlayer } from "./lib/helpers";
+import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 
 export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
     const onClickCorner = (id?: string) => moves.onBuildSettlement(id);
@@ -79,19 +80,24 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
     }
 
     return (
-        <div>
-            <div
-                className="board"
-                style={{
-                    top: BOARD_OFFSET,
-                    left: BOARD_OFFSET,
-                    height: G.board.height,
-                }}
-            >
-                {tiles}
-                {edges}
-                {corners}
-            </div>
+        <div className="container">
+            <TransformWrapper limitToBounds={false}>
+                <TransformComponent>
+                    <div
+                        className="board"
+                        style={{
+                            top: BOARD_OFFSET,
+                            left: BOARD_OFFSET,
+                            height: G.board.height,
+                            width: G.board.width + BOARD_OFFSET,
+                        }}
+                    >
+                        {tiles}
+                        {edges}
+                        {corners}
+                    </div>
+                </TransformComponent>
+            </TransformWrapper>
 
             <div className="controls">
                 <button onClick={() => moves.rollDice()}>Roll dice</button>
