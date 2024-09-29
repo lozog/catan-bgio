@@ -1,6 +1,6 @@
 import { Game } from "boardgame.io";
 import { ScenarioBuilder } from "./lib/ScenarioBuilder";
-import { Corner, GameState, Hand, Player } from "./lib/types";
+import { Building, Corner, GameState, Hand, Player } from "./lib/types";
 import { INVALID_MOVE } from "boardgame.io/core";
 import {
     getCorner,
@@ -11,6 +11,7 @@ import {
     isEdge,
     isEdgeAdjacentToCorner,
 } from "./lib/helpers";
+import { BUILDING_COSTS } from "./constants";
 
 /**
  * Given a dice roll, find all tiles with same value
@@ -86,17 +87,21 @@ function placeRoad(
     G: GameState,
     edgeId: string,
     player: Player,
-    adjacentCorner?: Corner
+    adjacentCorner?: Corner // TODO: make this a list, it must be adjacent to at least one
 ): boolean {
     if (!isEdge(edgeId)) return false;
     const edge = getEdge(G, edgeId);
 
     if (edge.player) {
+        console.log(`edge ${edgeId} already owned`);
         return false;
     }
 
     if (adjacentCorner) {
         if (!isEdgeAdjacentToCorner(edge, adjacentCorner)) {
+            console.log(
+                `edge ${edgeId} not adjacent to corner ${adjacentCorner.id}`
+            );
             return false;
         }
     }
@@ -104,6 +109,33 @@ function placeRoad(
     edge.player = player.id;
     player.roads.push(edge.id!);
     return true;
+}
+
+function purchaseIfSufficientResources(
+    G: GameState,
+    player: Player,
+    building: Building
+): boolean {
+    const building_cost =
+        BUILDING_COSTS[building as keyof typeof BUILDING_COSTS];
+
+    // TODO: clean this up
+    if (
+        player.hand["wood"] >= building_cost["wood"] &&
+        player.hand["wheat"] >= building_cost["wheat"] &&
+        player.hand["brick"] >= building_cost["brick"] &&
+        player.hand["ore"] >= building_cost["ore"] &&
+        player.hand["sheep"] >= building_cost["sheep"]
+    ) {
+        player.hand["wood"] -= building_cost["wood"];
+        player.hand["wheat"] -= building_cost["wheat"];
+        player.hand["brick"] -= building_cost["brick"];
+        player.hand["ore"] -= building_cost["ore"];
+        player.hand["sheep"] -= building_cost["sheep"];
+        return true;
+    }
+    console.log(`insufficient resources to build ${building}`);
+    return false;
 }
 
 export const HexGame: Game<GameState> = {
@@ -213,6 +245,34 @@ export const HexGame: Game<GameState> = {
                     if (G.diceRoll.length === 0) return INVALID_MOVE;
                     G.diceRoll = [];
                     events.endTurn();
+                },
+                onBuildSettlement: ({ G, playerID }, id) => {
+                    if (G.diceRoll.length === 0) return INVALID_MOVE;
+                    console.log(`clicked ${id}`);
+
+                    const player = getPlayer(G, playerID);
+
+                    if (!purchaseIfSufficientResources(G, player, "settlement"))
+                        return INVALID_MOVE;
+                    if (!placeSettlement(G, id, player)) return INVALID_MOVE;
+                },
+                onBuildRoad: ({ G, playerID }, id) => {
+                    if (G.diceRoll.length === 0) return INVALID_MOVE;
+                    console.log(`clicked ${id}`);
+
+                    const player = getPlayer(G, playerID);
+
+                    if (!purchaseIfSufficientResources(G, player, "road"))
+                        return INVALID_MOVE;
+                    if (
+                        !placeRoad(
+                            G,
+                            id,
+                            player
+                            // getCorner(G, player.settlements[0])
+                        )
+                    )
+                        return INVALID_MOVE;
                 },
             },
         },

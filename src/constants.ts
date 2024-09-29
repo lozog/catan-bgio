@@ -31,5 +31,22 @@ export const PLAYER_COLORS = [
     Color.player5,
 ];
 
+export const BUILDING_COSTS = {
+    settlement: {
+        wood: 1,
+        wheat: 1,
+        sheep: 1,
+        brick: 1,
+        ore: 0,
+    },
+    road: {
+        wood: 1,
+        brick: 1,
+        wheat: 0,
+        sheep: 0,
+        ore: 0,
+    },
+};
+
 // TODO: implement camera
 export const BOARD_OFFSET = 300;
