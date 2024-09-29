@@ -1,6 +1,6 @@
 import { Game } from "boardgame.io";
 import { ScenarioBuilder } from "./lib/ScenarioBuilder";
-import { Corner, GameState, Hand, Player } from "./lib/types";
+import { Corner, GameState, Hand, Player, Tile } from "./lib/types";
 import { INVALID_MOVE } from "boardgame.io/core";
 import {
     findCorner,
@@ -12,9 +12,13 @@ import {
     isEdgeAdjacentToCorner,
 } from "./lib/helpers";
 
-function handOutResources(G: GameState, diceTotal: number) {
+/**
+ * Given a dice roll, find all tiles with same value
+ * and yield resources to players with adjacent settlements/cities
+ */
+function distributeResources(G: GameState, roll: number) {
     for (const tile of G.board.tiles) {
-        if (!(tile.value === diceTotal)) continue;
+        if (!(tile.value === roll)) continue;
 
         for (const cornerId of tile.corners) {
             const corner = findCorner(G, cornerId);
@@ -32,6 +36,21 @@ function handOutResources(G: GameState, diceTotal: number) {
     }
 }
 
+function yieldResourcesFromTiles(
+    G: GameState,
+    tileIds: string[],
+    player: Player
+) {
+    tileIds.forEach((tileId) => {
+        const tile = findTile(G, tileId);
+        if (!tile.type) {
+            throw new Error(`Tile ${tile.id} is missing type`);
+        }
+        if (!(tile.type in player.hand)) return;
+        player.hand[tile.type as keyof Hand]++;
+    });
+}
+
 /**
  * @returns false if invalid move
  */
@@ -47,6 +66,8 @@ function placeSettlement(
     if (corner.player) {
         return false;
     }
+
+    // TODO: settlement must be two places away from any others
 
     corner.player = player.id;
     player.settlements.push(corner.id!);
@@ -147,17 +168,10 @@ export const HexGame: Game<GameState> = {
                         if (!placeSettlement(G, id, player))
                             return INVALID_MOVE;
 
+                        // give last player their resources
+                        // given a corner, find all adjacent tiles and yield resources
                         const corner = findCorner(G, id);
-                        corner.tiles.forEach((tileId) => {
-                            const tile = findTile(G, tileId);
-                            if (!tile.type) {
-                                throw new Error(
-                                    `Tile ${tile.id} is missing type`
-                                );
-                            }
-                            if (!(tile.type in player.hand)) return;
-                            player.hand[tile.type as keyof Hand]++;
-                        });
+                        yieldResourcesFromTiles(G, corner.tiles, player);
                     } else {
                         if (
                             !placeRoad(
@@ -181,7 +195,7 @@ export const HexGame: Game<GameState> = {
                     console.log(`Rolled ${diceTotal}`);
 
                     // hand out all resources
-                    handOutResources(G, diceTotal);
+                    distributeResources(G, diceTotal);
                 },
                 endTurn: ({ G, playerId, events }) => {
                     if (G.diceRoll.length === 0) return INVALID_MOVE;
