@@ -4,9 +4,9 @@ import { Corner, GameState, Hand, Player } from "./lib/types";
 import { INVALID_MOVE } from "boardgame.io/core";
 import {
     findAdjacentCorners,
-    findCorner,
-    findEdge,
-    findPlayer,
+    getCorner,
+    getEdge,
+    getPlayer,
     findTile,
     isCorner,
     isEdge,
@@ -22,9 +22,9 @@ function distributeResources(G: GameState, roll: number) {
         if (!(tile.value === roll)) continue;
 
         for (const cornerId of tile.corners) {
-            const corner = findCorner(G, cornerId);
+            const corner = getCorner(G, cornerId);
             if (corner.player) {
-                const player = findPlayer(G, corner.player);
+                const player = getPlayer(G, corner.player);
                 if (!tile.type) {
                     // TODO: make type required
                     throw new Error(`Tile ${tile.id} has no type`);
@@ -62,7 +62,7 @@ function placeSettlement(
 ): boolean {
     if (!isCorner(cornerId)) return false;
 
-    const corner = findCorner(G, cornerId);
+    const corner = getCorner(G, cornerId);
 
     if (corner.player) {
         return false;
@@ -90,7 +90,7 @@ function placeRoad(
     adjacentCorner?: Corner
 ): boolean {
     if (!isEdge(edgeId)) return false;
-    const edge = findEdge(G, edgeId);
+    const edge = getEdge(G, edgeId);
 
     if (edge.player) {
         return false;
@@ -132,7 +132,7 @@ export const HexGame: Game<GameState> = {
                 onClickBoardPiece: ({ G, playerID }, id) => {
                     console.log(`clicked ${id}`);
 
-                    const player = findPlayer(G, playerID);
+                    const player = getPlayer(G, playerID);
 
                     if (player.settlements.length === 0) {
                         if (!placeSettlement(G, id, player))
@@ -143,7 +143,7 @@ export const HexGame: Game<GameState> = {
                                 G,
                                 id,
                                 player,
-                                findCorner(G, player.settlements[0])
+                                getCorner(G, player.settlements[0])
                             )
                         )
                             return INVALID_MOVE;
@@ -167,7 +167,7 @@ export const HexGame: Game<GameState> = {
                 onClickBoardPiece: ({ G, playerID }, id) => {
                     console.log(`clicked ${id}`);
 
-                    const player = findPlayer(G, playerID);
+                    const player = getPlayer(G, playerID);
 
                     if (player.settlements.length === 1) {
                         if (!placeSettlement(G, id, player))
@@ -175,7 +175,7 @@ export const HexGame: Game<GameState> = {
 
                         // give last player their resources
                         // given a corner, find all adjacent tiles and yield resources
-                        const corner = findCorner(G, id);
+                        const corner = getCorner(G, id);
                         yieldResourcesFromTiles(G, corner.tiles, player);
                     } else {
                         if (
@@ -183,7 +183,7 @@ export const HexGame: Game<GameState> = {
                                 G,
                                 id,
                                 player,
-                                findCorner(G, player.settlements[1])
+                                getCorner(G, player.settlements[1])
                             )
                         )
                             return INVALID_MOVE;

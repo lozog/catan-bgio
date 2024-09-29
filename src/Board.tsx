@@ -2,12 +2,12 @@ import type { BoardProps } from "boardgame.io/dist/types/packages/react";
 import { GameState } from "./lib/types";
 import "./Board.css";
 import { BOARD_OFFSET, TILE_COLORS } from "./constants";
-import { findPlayer } from "./lib/helpers";
+import { getPlayer } from "./lib/helpers";
 
 export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
     const onClickBoardPiece = (id?: string) => moves.onClickBoardPiece(id);
 
-    const currentPlayer = findPlayer(G, ctx.currentPlayer);
+    const currentPlayer = getPlayer(G, ctx.currentPlayer);
 
     const tiles = [];
     for (const tile of G.board.tiles) {

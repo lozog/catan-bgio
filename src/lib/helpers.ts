@@ -9,8 +9,7 @@ export function isEdge(id: string): boolean {
     return id[0] === "E";
 }
 
-// TODO: rename getPlayer
-export function findPlayer(G: GameState, id: string): Player {
+export function getPlayer(G: GameState, id: string): Player {
     const player = G.players.find((p) => p.id === id);
     if (!player) {
         throw new Error("player not found");
@@ -18,8 +17,7 @@ export function findPlayer(G: GameState, id: string): Player {
     return player;
 }
 
-// TODO: rename getCorner
-export function findCorner(G: GameState, id: string): Corner {
+export function getCorner(G: GameState, id: string): Corner {
     const corner = G.board.corners.find((c) => c.id === id);
     if (!corner) {
         throw new Error("corner not found");
@@ -27,8 +25,7 @@ export function findCorner(G: GameState, id: string): Corner {
     return corner;
 }
 
-// TODO: rename getEdge
-export function findEdge(G: GameState, id: string): Edge {
+export function getEdge(G: GameState, id: string): Edge {
     const edge = G.board.edges.find((e) => e.id === id);
     if (!edge) {
         throw new Error("edge not found");
