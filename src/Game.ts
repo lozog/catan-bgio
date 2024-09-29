@@ -3,6 +3,7 @@ import { ScenarioBuilder } from "./lib/ScenarioBuilder";
 import { Corner, GameState, Hand, Player } from "./lib/types";
 import { INVALID_MOVE } from "boardgame.io/core";
 import {
+    findAdjacentCorners,
     findCorner,
     findEdge,
     findPlayer,
@@ -67,7 +68,10 @@ function placeSettlement(
         return false;
     }
 
-    // TODO: settlement must be two places away from any others
+    const adjacentCorners = findAdjacentCorners(G, corner);
+    for (const corner of adjacentCorners) {
+        if (corner.player) return false;
+    }
 
     corner.player = player.id;
     corner.building = "settlement";

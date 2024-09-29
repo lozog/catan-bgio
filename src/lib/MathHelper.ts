@@ -5,6 +5,7 @@ export interface Coordinates {
     y: number;
 }
 
+// TODO: don't need a class
 export class MathHelper {
     static round(num: number, dp: number) {
         const dp2 = Math.pow(10, dp);
