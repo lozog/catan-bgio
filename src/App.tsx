@@ -1,11 +1,16 @@
+import { Local, SocketIO } from "boardgame.io/multiplayer";
 import { Client } from "boardgame.io/react";
 import { HexBoard } from "./Board";
 import { HexGame } from "./Game";
 
-const App = Client({
+const GameClient = Client({
     game: HexGame,
     board: HexBoard,
     numPlayers: 3,
+    multiplayer: Local(),
+    // multiplayer: SocketIO({ server: "localhost:8000" }),
 });
+
+const App = () => <GameClient playerID="0" />;
 
 export default App;

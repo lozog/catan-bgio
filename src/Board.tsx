@@ -5,11 +5,17 @@ import { BOARD_OFFSET, TILE_COLORS } from "./constants";
 import { getPlayer } from "./lib/helpers";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 
-export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
+export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
     const onClickCorner = (id?: string) => moves.onBuildSettlement(id);
     const onClickEdge = (id?: string) => moves.onBuildRoad(id);
 
-    const currentPlayer = getPlayer(G, ctx.currentPlayer);
+    let currentPlayer;
+    if (!playerID) {
+        // spectator mode
+        currentPlayer = getPlayer(G, ctx.currentPlayer);
+    } else {
+        currentPlayer = getPlayer(G, playerID);
+    }
 
     const tiles = [];
     for (const tile of G.board.tiles) {
@@ -109,7 +115,7 @@ export function HexBoard({ ctx, G, moves }: BoardProps<GameState>) {
             </div>
             <div className="turn-info">
                 <div>Current phase: {ctx.phase}</div>
-                <div>Current player: {ctx.currentPlayer}</div>
+                <div>player: {currentPlayer.id}</div>
 
                 <div>
                     Roll:{" "}
