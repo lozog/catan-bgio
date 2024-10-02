@@ -7,8 +7,8 @@ const GameClient = Client({
     game: HexGame,
     board: HexBoard,
     numPlayers: 3,
-    multiplayer: Local(),
-    // multiplayer: SocketIO({ server: "localhost:8000" }),
+    // multiplayer: Local(),
+    multiplayer: SocketIO({ server: "localhost:8000" }),
 });
 
 const App = () => <GameClient playerID="0" />;
