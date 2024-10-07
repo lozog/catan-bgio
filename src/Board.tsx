@@ -95,34 +95,50 @@ export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
 
     return (
         <div className="container">
-            <TransformWrapper
-                limitToBounds={false}
-                initialPositionX={BOARD_OFFSET}
-                initialPositionY={BOARD_OFFSET}
-                maxScale={2.5}
-            >
-                <TransformComponent
-                    wrapperStyle={{
-                        width: "100%",
-                        maxWidth: "1000px",
-                        margin: "16px",
-                    }}
+            <div className="board-container">
+                <TransformWrapper
+                    limitToBounds={false}
+                    initialPositionX={BOARD_OFFSET}
+                    initialPositionY={BOARD_OFFSET}
+                    maxScale={2.5}
                 >
-                    <div
-                        className="board"
-                        style={{
-                            height: G.board.height,
-                            width: G.board.width + BOARD_OFFSET,
+                    <TransformComponent
+                        wrapperStyle={{
+                            width: "100%",
+                            maxWidth: "1000px",
                         }}
                     >
-                        {tiles}
-                        {edges}
-                        {corners}
-                    </div>
-                </TransformComponent>
-            </TransformWrapper>
+                        <div
+                            className="board"
+                            style={{
+                                height: G.board.height,
+                                width: G.board.width + BOARD_OFFSET,
+                            }}
+                        >
+                            {tiles}
+                            {edges}
+                            {corners}
+                        </div>
+                    </TransformComponent>
+                </TransformWrapper>
+            </div>
 
             <div className="hud">
+                <div className="controls">
+                    <button
+                        disabled={G.diceRoll.length !== 0} // TODO: create isValidMove function
+                        onClick={() => moves.rollDice()}
+                    >
+                        Roll dice
+                    </button>
+                    <button disabled>Trade</button>
+                    <button
+                        disabled={G.diceRoll.length === 0}
+                        onClick={() => moves.endTurn()}
+                    >
+                        End turn
+                    </button>
+                </div>
                 <div className="turn-info">
                     <div>Current phase: {ctx.phase}</div>
                     <div>player: {currentPlayer.id}</div>
@@ -148,21 +164,6 @@ export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
                     <div className="player-resource">
                         ore: {currentPlayer.hand["ore"]}
                     </div>
-                </div>
-                <div className="controls">
-                    <button
-                        disabled={G.diceRoll.length !== 0} // TODO: create isValidMove function
-                        onClick={() => moves.rollDice()}
-                    >
-                        Roll dice
-                    </button>
-                    <button disabled>Trade</button>
-                    <button
-                        disabled={G.diceRoll.length === 0}
-                        onClick={() => moves.endTurn()}
-                    >
-                        End turn
-                    </button>
                 </div>
             </div>
         </div>

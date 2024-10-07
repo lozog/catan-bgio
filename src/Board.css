@@ -1,21 +1,32 @@
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.board-container {
+    flex-grow: 1;
+}
+
 .board {
     position: relative;
 }
 
 .hud {
     background: beige;
-}
-
-.hud > div {
-    display: inline-block;
+    display: flex;
+    flex-grow: 0;
+    flex-shrink: 0;
+    height: 300px;
 }
 
 .controls {
-    width: 50%;
+    width: 35%;
+    height: 100%;
 }
 
 .turn-info {
     width: 50%;
+    height: 100%;
 }
 
 .player-resource {
