@@ -1,7 +1,7 @@
 import { Coordinates } from "./MathHelper";
 
 type TileType = "wood" | "brick" | "ore" | "wheat" | "sheep" | "desert" | "sea";
-export type Building = "settlement" | "road";
+export type Building = "settlement" | "road" | "city";
 
 export interface Edge {
     id: string;
@@ -25,7 +25,7 @@ export interface Corner {
     player?: string;
     tiles: string[];
     adjacentCorners: string[];
-    building: Extract<Building, "settlement"> | null;
+    building: Extract<Building, "settlement" | "city"> | null;
 }
 
 export interface Layout {
@@ -73,6 +73,7 @@ export interface Player {
     color: string;
     settlements: string[];
     roads: string[];
+    cities: string[];
     hand: Hand;
 }
 

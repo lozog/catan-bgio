@@ -414,12 +414,13 @@ export class ScenarioBuilder {
                 color: PLAYER_COLORS[i],
                 settlements: [],
                 roads: [],
+                cities: [],
                 hand: {
-                    wood: 0,
-                    brick: 0,
-                    ore: 0,
-                    wheat: 0,
-                    sheep: 0,
+                    wood: 5,
+                    brick: 5,
+                    ore: 5,
+                    wheat: 5,
+                    sheep: 5,
                 },
             });
         }

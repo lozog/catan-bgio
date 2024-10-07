@@ -1,13 +1,20 @@
 import type { BoardProps } from "boardgame.io/dist/types/packages/react";
-import { GameState } from "./lib/types";
+import { Building, GameState } from "./lib/types";
 import "./Board.css";
 import { BOARD_OFFSET, TILE_COLORS } from "./constants";
 import { getPlayer } from "./lib/helpers";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 
 export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
-    const onClickCorner = (id?: string) => moves.onBuildSettlement(id);
-    const onClickEdge = (id?: string) => moves.onBuildRoad(id);
+    const onClickCorner = (id: string, building: Building | null) => {
+        console.log("clicking with build", building);
+        if (building === "settlement") {
+            moves.onBuildCity(id);
+        } else {
+            moves.onBuildSettlement(id);
+        }
+    };
+    const onClickEdge = (id: string) => moves.onBuildRoad(id);
 
     let currentPlayer;
     if (!playerID) {
@@ -44,7 +51,7 @@ export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
         corners.push(
             <div
                 key={corner.id}
-                onClick={() => onClickCorner(corner.id)}
+                onClick={() => onClickCorner(corner.id, corner.building)}
                 className="corner"
                 style={{
                     top: corner.center.y,
@@ -53,6 +60,10 @@ export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
                     color: "white",
                     fontSize: "8px",
                     lineHeight: "18px",
+                    clipPath:
+                        corner.building === "city"
+                            ? "polygon(50% 0, 0 100%, 100% 100%)"
+                            : "default",
                 }}
             >
                 {corner.id}

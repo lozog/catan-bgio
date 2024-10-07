@@ -81,6 +81,29 @@ function placeSettlement(
 }
 
 /**
+ * @returns false if invalid move
+ */
+function placeCity(G: GameState, cornerId: string, player: Player): boolean {
+    if (!isCorner(cornerId)) return false;
+
+    const corner = getCorner(G, cornerId);
+
+    if (corner.player !== player.id) {
+        return false;
+    }
+
+    if (corner.building !== "settlement") {
+        return false;
+    }
+
+    corner.player = player.id;
+    corner.building = "city";
+    player.cities.push(corner.id!);
+
+    return true;
+}
+
+/**
  *
  * @param G
  * @param edgeId
@@ -275,6 +298,10 @@ export const HexGame: Game<GameState> = {
 
                     if (!purchaseIfSufficientResources(G, player, "settlement"))
                         return INVALID_MOVE;
+                    // hold up - can this bug out and buy a settlement but not place it?
+                    // let's say you have enough resources to buy it but it's owned by someone else?
+                    // it's fine but i'm not really sure why
+                    // TODO: move the "if sufficient resources" out of this call
                     if (!placeSettlement(G, id, player)) return INVALID_MOVE;
                 },
                 onBuildRoad: ({ G, playerID }, id) => {
@@ -288,6 +315,17 @@ export const HexGame: Game<GameState> = {
 
                     if (!placeRoad(G, id, player, player.roads))
                         return INVALID_MOVE;
+                },
+                onBuildCity: ({ G, playerID }, id) => {
+                    if (G.diceRoll.length === 0) return INVALID_MOVE;
+                    console.log(`clicked ${id}`);
+
+                    const player = getPlayer(G, playerID);
+
+                    if (!purchaseIfSufficientResources(G, player, "city"))
+                        return INVALID_MOVE;
+
+                    if (!placeCity(G, id, player)) return INVALID_MOVE;
                 },
             },
         },
