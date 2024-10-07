@@ -9,12 +9,12 @@ export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
     const onClickCorner = (id: string, building: Building | null) => {
         console.log("clicking with build", building);
         if (building === "settlement") {
-            moves.onBuildCity(id);
+            moves.buildCity(id);
         } else {
-            moves.onBuildSettlement(id);
+            moves.buildSettlement(id);
         }
     };
-    const onClickEdge = (id: string) => moves.onBuildRoad(id);
+    const onClickEdge = (id: string) => moves.buildRoad(id);
 
     let currentPlayer;
     if (!playerID) {

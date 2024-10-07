@@ -202,7 +202,7 @@ export const HexGame: Game<GameState> = {
             },
             endIf: ({ G, ctx }) => ctx.turn > ctx.numPlayers,
             moves: {
-                onBuildSettlement: ({ G, playerID }, id) => {
+                buildSettlement: ({ G, playerID }, id) => {
                     console.log(`clicked ${id}`);
 
                     const player = getPlayer(G, playerID);
@@ -210,7 +210,7 @@ export const HexGame: Game<GameState> = {
                     if (player.settlements.length !== 0) return INVALID_MOVE;
                     if (!placeSettlement(G, id, player)) return INVALID_MOVE;
                 },
-                onBuildRoad: ({ G, playerID }, id) => {
+                buildRoad: ({ G, playerID }, id) => {
                     console.log(`clicked ${id}`);
 
                     const player = getPlayer(G, playerID);
@@ -242,7 +242,7 @@ export const HexGame: Game<GameState> = {
             },
             endIf: ({ G, ctx }) => ctx.playOrderPos < 0,
             moves: {
-                onBuildSettlement: ({ G, playerID }, id) => {
+                buildSettlement: ({ G, playerID }, id) => {
                     console.log(`clicked ${id}`);
 
                     const player = getPlayer(G, playerID);
@@ -255,7 +255,7 @@ export const HexGame: Game<GameState> = {
                     const corner = getCorner(G, id);
                     yieldResourcesFromTiles(G, corner.tiles, player);
                 },
-                onBuildRoad: ({ G, playerID }, id) => {
+                buildRoad: ({ G, playerID }, id) => {
                     console.log(`clicked ${id}`);
 
                     const player = getPlayer(G, playerID);
@@ -290,7 +290,7 @@ export const HexGame: Game<GameState> = {
                     G.diceRoll = [];
                     events.endTurn();
                 },
-                onBuildSettlement: ({ G, playerID }, id) => {
+                buildSettlement: ({ G, playerID }, id) => {
                     if (G.diceRoll.length === 0) return INVALID_MOVE;
                     console.log(`clicked ${id}`);
 
@@ -304,7 +304,7 @@ export const HexGame: Game<GameState> = {
                     // TODO: move the "if sufficient resources" out of this call
                     if (!placeSettlement(G, id, player)) return INVALID_MOVE;
                 },
-                onBuildRoad: ({ G, playerID }, id) => {
+                buildRoad: ({ G, playerID }, id) => {
                     if (G.diceRoll.length === 0) return INVALID_MOVE;
                     console.log(`clicked ${id}`);
 
@@ -316,7 +316,7 @@ export const HexGame: Game<GameState> = {
                     if (!placeRoad(G, id, player, player.roads))
                         return INVALID_MOVE;
                 },
-                onBuildCity: ({ G, playerID }, id) => {
+                buildCity: ({ G, playerID }, id) => {
                     if (G.diceRoll.length === 0) return INVALID_MOVE;
                     console.log(`clicked ${id}`);
 
