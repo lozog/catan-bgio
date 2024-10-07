@@ -150,9 +150,19 @@ export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
                     </div>
                 </div>
                 <div className="controls">
-                    <button onClick={() => moves.rollDice()}>Roll dice</button>
+                    <button
+                        disabled={G.diceRoll.length !== 0} // TODO: create isValidMove function
+                        onClick={() => moves.rollDice()}
+                    >
+                        Roll dice
+                    </button>
                     <button disabled>Trade</button>
-                    <button onClick={() => moves.endTurn()}>End turn</button>
+                    <button
+                        disabled={G.diceRoll.length === 0}
+                        onClick={() => moves.endTurn()}
+                    >
+                        End turn
+                    </button>
                 </div>
             </div>
         </div>
