@@ -57,9 +57,6 @@ export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
                     top: corner.center.y,
                     left: corner.center.x,
                     backgroundColor: player?.color,
-                    color: "white",
-                    fontSize: "8px",
-                    lineHeight: "18px",
                     clipPath:
                         corner.building === "city"
                             ? "polygon(50% 0, 0 100%, 100% 100%)"
@@ -104,7 +101,13 @@ export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
                 initialPositionY={BOARD_OFFSET}
                 maxScale={2.5}
             >
-                <TransformComponent>
+                <TransformComponent
+                    wrapperStyle={{
+                        width: "100%",
+                        maxWidth: "1000px",
+                        margin: "16px",
+                    }}
+                >
                     <div
                         className="board"
                         style={{
@@ -119,24 +122,38 @@ export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
                 </TransformComponent>
             </TransformWrapper>
 
-            <div className="controls">
-                <button onClick={() => moves.rollDice()}>Roll dice</button>
-                <button disabled>Trade</button>
-                <button onClick={() => moves.endTurn()}>End turn</button>
-            </div>
-            <div className="turn-info">
-                <div>Current phase: {ctx.phase}</div>
-                <div>player: {currentPlayer.id}</div>
+            <div className="hud">
+                <div className="turn-info">
+                    <div>Current phase: {ctx.phase}</div>
+                    <div>player: {currentPlayer.id}</div>
 
-                <div>
-                    Roll:{" "}
-                    {G.diceRoll.length ? G.diceRoll[0] + G.diceRoll[1] : "--"}
+                    <div>
+                        Roll:{" "}
+                        {G.diceRoll.length
+                            ? G.diceRoll[0] + G.diceRoll[1]
+                            : "--"}
+                    </div>
+                    <div className="player-resource">
+                        wood: {currentPlayer.hand["wood"]}
+                    </div>
+                    <div className="player-resource">
+                        brick: {currentPlayer.hand["brick"]}
+                    </div>
+                    <div className="player-resource">
+                        sheep: {currentPlayer.hand["sheep"]}
+                    </div>
+                    <div className="player-resource">
+                        wheat: {currentPlayer.hand["wheat"]}
+                    </div>
+                    <div className="player-resource">
+                        ore: {currentPlayer.hand["ore"]}
+                    </div>
                 </div>
-                <div>wood: {currentPlayer.hand["wood"]}</div>
-                <div>brick: {currentPlayer.hand["brick"]}</div>
-                <div>sheep: {currentPlayer.hand["sheep"]}</div>
-                <div>wheat: {currentPlayer.hand["wheat"]}</div>
-                <div>ore: {currentPlayer.hand["ore"]}</div>
+                <div className="controls">
+                    <button onClick={() => moves.rollDice()}>Roll dice</button>
+                    <button disabled>Trade</button>
+                    <button onClick={() => moves.endTurn()}>End turn</button>
+                </div>
             </div>
         </div>
     );

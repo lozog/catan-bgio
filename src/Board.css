@@ -2,6 +2,27 @@
     position: relative;
 }
 
+.hud {
+    background: beige;
+}
+
+.hud > div {
+    display: inline-block;
+}
+
+.controls {
+    width: 50%;
+}
+
+.turn-info {
+    width: 50%;
+}
+
+.player-resource {
+    display: inline-block;
+    margin-right: 8px;
+}
+
 .tile-value {
     line-height: normal;
     font-size: 20px;
@@ -34,6 +55,9 @@
     height: 20px;
     clip-path: circle(10px);
     background-color: black;
+    color: white;
+    font-size: 8px;
+    line-height: 18px;
 
     /* accounts for the fact that we have the shape's center coordinates, but are using top and left positions */
     transform: translate(-50%, -50%);
