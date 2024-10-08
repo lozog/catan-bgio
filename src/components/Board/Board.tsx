@@ -1,11 +1,11 @@
 import type { BoardProps } from "boardgame.io/dist/types/packages/react";
-import { Building, GameState } from "./lib/types";
+import { Building, GameState } from "../../lib/types";
 import "./Board.css";
-import { BOARD_OFFSET, TILE_COLORS } from "./constants";
-import { getPlayer } from "./lib/helpers";
+import { BOARD_OFFSET, TILE_COLORS } from "../../constants";
+import { getPlayer } from "../../lib/helpers";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import { useState } from "react";
-import { TradeWindow } from "./components/TradeWindow/TradeWindow";
+import { TradeWindow } from "../TradeWindow/TradeWindow";
 
 export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
     const [isTradeWindowOpen, setIsTradeWindowOpen] = useState(false);

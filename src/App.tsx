@@ -1,6 +1,6 @@
 import { Local, SocketIO } from "boardgame.io/multiplayer";
 import { Client } from "boardgame.io/react";
-import { HexBoard } from "./Board";
+import { HexBoard } from "./components/Board/Board";
 import { HexGame } from "./Game";
 
 const GameClient = Client({
