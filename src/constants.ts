@@ -1,3 +1,5 @@
+export const RESOURCES = ["wood", "brick", "ore", "wheat", "sheep"] as const;
+
 export enum Color {
     wood = "#385626",
     brick = "#b33e27",

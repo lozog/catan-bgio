@@ -135,7 +135,7 @@ export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
                             setIsTradeWindowOpen(!isTradeWindowOpen);
                         }}
                     >
-                        Trade
+                        Open trade menu
                     </button>
                     <button
                         disabled={G.diceRoll.length === 0}

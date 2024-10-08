@@ -33,12 +33,12 @@ export const Hud = styled.div`
 `;
 
 export const Controls = styled.div`
-    width: 35%;
+    flex: 4;
     height: 100%;
 `;
 
 export const TurnInfo = styled.div`
-    width: 50%;
+    flex: 5;
     height: 100%;
 `;
 

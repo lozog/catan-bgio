@@ -1,13 +1,9 @@
+import { RESOURCES } from "../constants";
 import { Coordinates } from "./MathHelper";
 
-export type TileType =
-    | "wood"
-    | "brick"
-    | "ore"
-    | "wheat"
-    | "sheep"
-    | "desert"
-    | "sea";
+export type Resource = (typeof RESOURCES)[number];
+export type TileType = Resource | "desert" | "sea";
+
 export type Building = "settlement" | "road" | "city";
 
 export interface Edge {
