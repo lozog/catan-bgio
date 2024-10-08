@@ -1,47 +1,49 @@
-.container {
+import { styled } from "styled-components";
+
+export const Container = styled.div`
     display: flex;
     flex-direction: column;
-}
+`;
 
-.board-container {
+export const BoardContainer = styled.div`
     flex-grow: 1;
-}
+`;
 
-.board {
+export const BoardWrapper = styled.div`
     position: relative;
-}
+`;
 
-.hud {
+export const Hud = styled.div`
     background: beige;
     display: flex;
     flex-grow: 0;
     flex-shrink: 0;
     height: 300px;
-}
+`;
 
-.controls {
+export const Controls = styled.div`
     width: 35%;
     height: 100%;
-}
+`;
 
-.turn-info {
+export const TurnInfo = styled.div`
     width: 50%;
     height: 100%;
-}
+`;
 
-.player-resource {
+export const PlayerResource = styled.div`
     display: inline-block;
     margin-right: 8px;
-}
+`;
 
-.tile-value {
+export const TileValue = styled.div`
     line-height: normal;
     font-size: 20px;
     font-weight: bold;
     color: #efefef;
-}
+`;
 
-.hexagon {
+export const Hexagon = styled.div`
     position: absolute;
     width: 100px; /* hexagon size */
     line-height: 32px;
@@ -53,13 +55,13 @@
 
     /* accounts for the fact that we have the shape's center coordinates, but are using top and left positions */
     transform: translate(-50%, -50%);
-}
-.hexagon:hover {
-    /* TODO: use styled-components so we don't need !important */
-    background: #efefef !important;
-}
 
-.corner {
+    &:hover {
+        background: #efefef !important;
+    }
+`;
+
+export const Corner = styled.div`
     cursor: pointer;
     position: absolute;
     width: 20px;
@@ -72,14 +74,13 @@
 
     /* accounts for the fact that we have the shape's center coordinates, but are using top and left positions */
     transform: translate(-50%, -50%);
-}
 
-.corner:hover {
-    /* TODO: use styled-components so we don't need !important */
-    background: #efefef !important;
-}
+    &:hover {
+        background: #efefef !important;
+    }
+`;
 
-.edge {
+export const Edge = styled.div`
     cursor: pointer;
     position: absolute;
     height: 5px; /* line thickness */
@@ -89,9 +90,8 @@
 
     /* accounts for the fact that we have the shape's center coordinates, but are using top and left positions */
     transform: translate(-50%, -50%);
-}
 
-.edge:hover {
-    /* TODO: use styled-components so we don't need !important */
-    background: #efefef !important;
-}
+    &:hover {
+        background: #efefef !important;
+    }
+`;

@@ -1,11 +1,23 @@
 import type { BoardProps } from "boardgame.io/dist/types/packages/react";
 import { Building, GameState } from "../../lib/types";
-import "./Board.css";
 import { BOARD_OFFSET, TILE_COLORS } from "../../constants";
 import { getPlayer } from "../../lib/helpers";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import { useState } from "react";
 import { TradeWindow } from "../TradeWindow/TradeWindow";
+import {
+    BoardContainer,
+    BoardWrapper,
+    Container,
+    Controls,
+    Corner,
+    Edge,
+    Hexagon,
+    Hud,
+    PlayerResource,
+    TileValue,
+    TurnInfo,
+} from "./styles";
 
 export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
     const [isTradeWindowOpen, setIsTradeWindowOpen] = useState(false);
@@ -31,7 +43,7 @@ export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
     const tiles = [];
     for (const tile of G.board.tiles) {
         tiles.push(
-            <div
+            <Hexagon
                 key={tile.id}
                 style={{
                     top: tile.center.y,
@@ -41,11 +53,10 @@ export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
                             (tile.type ?? "sea") as keyof typeof TILE_COLORS
                         ],
                 }}
-                className="hexagon"
             >
                 {tile.id}
-                <div className="tile-value">{tile.value}</div>
-            </div>
+                <TileValue>{tile.value}</TileValue>
+            </Hexagon>
         );
     }
 
@@ -53,10 +64,9 @@ export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
     for (const corner of G.board.corners) {
         const player = G.players.find((p) => p.id === corner.player);
         corners.push(
-            <div
+            <Corner
                 key={corner.id}
                 onClick={() => onClickCorner(corner.id, corner.building)}
-                className="corner"
                 style={{
                     top: corner.center.y,
                     left: corner.center.x,
@@ -68,7 +78,7 @@ export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
                 }}
             >
                 {corner.id}
-            </div>
+            </Corner>
         );
     }
 
@@ -82,10 +92,9 @@ export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
         const angle = Math.atan2(y2 - y1, x2 - x1) * (180 / Math.PI);
         const player = G.players.find((p) => p.id === edge.player);
         edges.push(
-            <div
+            <Edge
                 key={edge.id}
                 onClick={() => onClickEdge(edge.id)}
-                className="edge"
                 style={{
                     width: length,
                     left: centerX,
@@ -98,8 +107,8 @@ export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
     }
 
     return (
-        <div className="container">
-            <div className="board-container">
+        <Container>
+            <BoardContainer>
                 <TransformWrapper
                     limitToBounds={false}
                     initialPositionX={BOARD_OFFSET}
@@ -112,8 +121,7 @@ export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
                             maxWidth: "1000px",
                         }}
                     >
-                        <div
-                            className="board"
+                        <BoardWrapper
                             style={{
                                 height: G.board.height,
                                 width: G.board.width + BOARD_OFFSET,
@@ -122,13 +130,13 @@ export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
                             {tiles}
                             {edges}
                             {corners}
-                        </div>
+                        </BoardWrapper>
                     </TransformComponent>
                 </TransformWrapper>
-            </div>
+            </BoardContainer>
 
-            <div className="hud">
-                <div className="controls">
+            <Hud>
+                <Controls>
                     <button
                         disabled={G.diceRoll.length !== 0} // TODO: create isValidMove function
                         onClick={() => moves.rollDice()}
@@ -150,8 +158,8 @@ export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
                         End turn
                     </button>
                     {isTradeWindowOpen && <TradeWindow />}
-                </div>
-                <div className="turn-info">
+                </Controls>
+                <TurnInfo>
                     <div>Current phase: {ctx.phase}</div>
                     <div>player: {currentPlayer.id}</div>
 
@@ -161,23 +169,23 @@ export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
                             ? G.diceRoll[0] + G.diceRoll[1]
                             : "--"}
                     </div>
-                    <div className="player-resource">
+                    <PlayerResource>
                         wood: {currentPlayer.hand["wood"]}
-                    </div>
-                    <div className="player-resource">
+                    </PlayerResource>
+                    <PlayerResource>
                         brick: {currentPlayer.hand["brick"]}
-                    </div>
-                    <div className="player-resource">
+                    </PlayerResource>
+                    <PlayerResource>
                         sheep: {currentPlayer.hand["sheep"]}
-                    </div>
-                    <div className="player-resource">
+                    </PlayerResource>
+                    <PlayerResource>
                         wheat: {currentPlayer.hand["wheat"]}
-                    </div>
-                    <div className="player-resource">
+                    </PlayerResource>
+                    <PlayerResource>
                         ore: {currentPlayer.hand["ore"]}
-                    </div>
-                </div>
-            </div>
-        </div>
+                    </PlayerResource>
+                </TurnInfo>
+            </Hud>
+        </Container>
     );
 }
