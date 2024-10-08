@@ -45,9 +45,9 @@ export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
         tiles.push(
             <Hexagon
                 key={tile.id}
-                centerX={tile.center.x}
-                centerY={tile.center.y}
-                tileType={tile.type ?? "sea"}
+                $centerX={tile.center.x}
+                $centerY={tile.center.y}
+                $tileType={tile.type ?? "sea"}
             >
                 {tile.id}
                 <TileValue>{tile.value}</TileValue>
@@ -62,10 +62,10 @@ export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
             <Corner
                 key={corner.id}
                 onClick={() => onClickCorner(corner.id, corner.building)}
-                centerX={corner.center.x}
-                centerY={corner.center.y}
-                building={corner.building as Building}
-                playerColor={player?.color}
+                $centerX={corner.center.x}
+                $centerY={corner.center.y}
+                $building={corner.building as Building}
+                $playerColor={player?.color}
             >
                 {corner.id}
             </Corner>
@@ -85,11 +85,11 @@ export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
             <Edge
                 key={edge.id}
                 onClick={() => onClickEdge(edge.id)}
-                width={length}
-                centerX={centerX}
-                centerY={centerY}
-                angle={angle}
-                playerColor={player?.color}
+                $width={length}
+                $centerX={centerX}
+                $centerY={centerY}
+                $angle={angle}
+                $playerColor={player?.color}
             />
         );
     }

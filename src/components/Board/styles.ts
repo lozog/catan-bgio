@@ -55,9 +55,9 @@ export const TileValue = styled.div`
 `;
 
 export const Hexagon = styled.div<{
-    centerX: number;
-    centerY: number;
-    tileType: TileType;
+    $centerX: number;
+    $centerY: number;
+    $tileType: TileType;
 }>`
     position: absolute;
     width: ${HEXAGON_SIZE}px;
@@ -68,9 +68,9 @@ export const Hexagon = styled.div<{
     aspect-ratio: 1 / cos(30deg);
     clip-path: polygon(50% -50%, 100% 50%, 50% 150%, 0 50%);
 
-    left: ${(props) => props.centerX}px;
-    top: ${(props) => props.centerY}px;
-    background-color: ${(props) => TILE_COLORS[props.tileType]};
+    left: ${(props) => props.$centerX}px;
+    top: ${(props) => props.$centerY}px;
+    background-color: ${(props) => TILE_COLORS[props.$tileType]};
 
     /* accounts for the fact that we have the shape's center coordinates, but are using top and left positions */
     transform: translate(-50%, -50%);
@@ -85,10 +85,10 @@ export const Hexagon = styled.div<{
 `;
 
 export const Corner = styled.div<{
-    centerX: number;
-    centerY: number;
-    building?: Building;
-    playerColor?: string;
+    $centerX: number;
+    $centerY: number;
+    $building?: Building;
+    $playerColor?: string;
 }>`
     cursor: pointer;
     position: absolute;
@@ -99,12 +99,12 @@ export const Corner = styled.div<{
     font-size: 8px;
     line-height: 18px;
 
-    left: ${(props) => props.centerX}px;
-    top: ${(props) => props.centerY}px;
+    left: ${(props) => props.$centerX}px;
+    top: ${(props) => props.$centerY}px;
     background-color: ${(props) =>
-        props.playerColor ? props.playerColor : "black"};
+        props.$playerColor ? props.$playerColor : "black"};
     clip-path: ${(props) =>
-        props.building === "city"
+        props.$building === "city"
             ? "polygon(50% 0, 0 100%, 100% 100%)" // draw city as a triangle
             : "circle(10px)"};
 
@@ -118,22 +118,22 @@ export const Corner = styled.div<{
 `;
 
 export const Edge = styled.div<{
-    width: number;
-    centerX: number;
-    centerY: number;
-    angle: number;
-    playerColor?: string;
+    $width: number;
+    $centerX: number;
+    $centerY: number;
+    $angle: number;
+    $playerColor?: string;
 }>`
     cursor: pointer;
     position: absolute;
     height: ${ROAD_WIDTH}px; /* line thickness */
 
-    width: ${(props) => props.width}px;
-    left: ${(props) => props.centerX}px;
-    top: ${(props) => props.centerY}px;
-    transform: translate(-50%, -50%) rotate(${(props) => props.angle}deg);
+    width: ${(props) => props.$width}px;
+    left: ${(props) => props.$centerX}px;
+    top: ${(props) => props.$centerY}px;
+    transform: translate(-50%, -50%) rotate(${(props) => props.$angle}deg);
     background-color: ${(props) =>
-        props.playerColor ? props.playerColor : Color.road};
+        props.$playerColor ? props.$playerColor : Color.road};
 
     &:hover {
         color: black;
