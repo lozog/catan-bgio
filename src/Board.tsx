@@ -4,8 +4,12 @@ import "./Board.css";
 import { BOARD_OFFSET, TILE_COLORS } from "./constants";
 import { getPlayer } from "./lib/helpers";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
+import { useState } from "react";
+import { TradeWindow } from "./components/TradeWindow/TradeWindow";
 
 export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
+    const [isTradeWindowOpen, setIsTradeWindowOpen] = useState(false);
+
     const onClickCorner = (id: string, building: Building | null) => {
         console.log("clicking with build", building);
         if (building === "settlement") {
@@ -131,13 +135,21 @@ export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
                     >
                         Roll dice
                     </button>
-                    <button disabled>Trade</button>
+                    <button
+                        disabled={G.diceRoll.length === 0}
+                        onClick={() => {
+                            setIsTradeWindowOpen(!isTradeWindowOpen);
+                        }}
+                    >
+                        Trade
+                    </button>
                     <button
                         disabled={G.diceRoll.length === 0}
                         onClick={() => moves.endTurn()}
                     >
                         End turn
                     </button>
+                    {isTradeWindowOpen && <TradeWindow />}
                 </div>
                 <div className="turn-info">
                     <div>Current phase: {ctx.phase}</div>
