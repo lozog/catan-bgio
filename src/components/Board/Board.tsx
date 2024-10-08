@@ -1,6 +1,6 @@
 import type { BoardProps } from "boardgame.io/dist/types/packages/react";
 import { Building, GameState } from "../../lib/types";
-import { BOARD_OFFSET, TILE_COLORS } from "../../constants";
+import { BOARD_OFFSET } from "../../constants";
 import { getPlayer } from "../../lib/helpers";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import { useState } from "react";

@@ -67,7 +67,7 @@ export const Hexagon = styled.div<{
     transform: translate(-50%, -50%);
 
     &:hover {
-        background: #efefef !important;
+        background: #efefef;
     }
 `;
 
@@ -99,7 +99,7 @@ export const Corner = styled.div<{
     transform: translate(-50%, -50%);
 
     &:hover {
-        background: #efefef !important;
+        background: #efefef;
     }
 `;
 
@@ -124,6 +124,6 @@ export const Edge = styled.div<{
         props.playerColor ? props.playerColor : "#b57112"};
 
     &:hover {
-        background: #efefef !important;
+        background: #efefef;
     }
 `;
