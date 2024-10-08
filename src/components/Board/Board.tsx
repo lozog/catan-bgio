@@ -67,15 +67,10 @@ export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
             <Corner
                 key={corner.id}
                 onClick={() => onClickCorner(corner.id, corner.building)}
-                style={{
-                    top: corner.center.y,
-                    left: corner.center.x,
-                    backgroundColor: player?.color,
-                    clipPath:
-                        corner.building === "city"
-                            ? "polygon(50% 0, 0 100%, 100% 100%)"
-                            : "default",
-                }}
+                centerX={corner.center.x}
+                centerY={corner.center.y}
+                building={corner.building as Building}
+                playerColor={player?.color}
             >
                 {corner.id}
             </Corner>

@@ -1,4 +1,5 @@
 import { styled } from "styled-components";
+import { Building } from "../../lib/types";
 
 export const Container = styled.div`
     display: flex;
@@ -61,16 +62,29 @@ export const Hexagon = styled.div`
     }
 `;
 
-export const Corner = styled.div`
+export const Corner = styled.div<{
+    centerX: number;
+    centerY: number;
+    building?: Building;
+    playerColor?: string;
+}>`
     cursor: pointer;
     position: absolute;
     width: 20px;
     height: 20px;
     clip-path: circle(10px);
-    background-color: black;
     color: white;
     font-size: 8px;
     line-height: 18px;
+
+    left: ${(props) => props.centerX}px;
+    top: ${(props) => props.centerY}px;
+    background-color: ${(props) =>
+        props.playerColor ? props.playerColor : "black"};
+    clip-path: ${(props) =>
+        props.building === "city"
+            ? "polygon(50% 0, 0 100%, 100% 100%)" // draw city as a triangle
+            : "circle(10px)"};
 
     /* accounts for the fact that we have the shape's center coordinates, but are using top and left positions */
     transform: translate(-50%, -50%);
