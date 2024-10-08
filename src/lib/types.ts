@@ -1,6 +1,13 @@
 import { Coordinates } from "./MathHelper";
 
-type TileType = "wood" | "brick" | "ore" | "wheat" | "sheep" | "desert" | "sea";
+export type TileType =
+    | "wood"
+    | "brick"
+    | "ore"
+    | "wheat"
+    | "sheep"
+    | "desert"
+    | "sea";
 export type Building = "settlement" | "road" | "city";
 
 export interface Edge {

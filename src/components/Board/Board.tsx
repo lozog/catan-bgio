@@ -45,14 +45,9 @@ export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
         tiles.push(
             <Hexagon
                 key={tile.id}
-                style={{
-                    top: tile.center.y,
-                    left: tile.center.x,
-                    backgroundColor:
-                        TILE_COLORS[
-                            (tile.type ?? "sea") as keyof typeof TILE_COLORS
-                        ],
-                }}
+                centerX={tile.center.x}
+                centerY={tile.center.y}
+                tileType={tile.type ?? "sea"}
             >
                 {tile.id}
                 <TileValue>{tile.value}</TileValue>

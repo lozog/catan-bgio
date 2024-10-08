@@ -1,5 +1,6 @@
 import { styled } from "styled-components";
-import { Building } from "../../lib/types";
+import { Building, TileType } from "../../lib/types";
+import { TILE_COLORS } from "../../constants";
 
 export const Container = styled.div`
     display: flex;
@@ -44,7 +45,11 @@ export const TileValue = styled.div`
     color: #efefef;
 `;
 
-export const Hexagon = styled.div`
+export const Hexagon = styled.div<{
+    centerX: number;
+    centerY: number;
+    tileType: TileType;
+}>`
     position: absolute;
     width: 100px; /* hexagon size */
     line-height: 32px;
@@ -53,6 +58,10 @@ export const Hexagon = styled.div`
     /* define hexagon shape */
     aspect-ratio: 1 / cos(30deg);
     clip-path: polygon(50% -50%, 100% 50%, 50% 150%, 0 50%);
+
+    left: ${(props) => props.centerX}px;
+    top: ${(props) => props.centerY}px;
+    background-color: ${(props) => TILE_COLORS[props.tileType]};
 
     /* accounts for the fact that we have the shape's center coordinates, but are using top and left positions */
     transform: translate(-50%, -50%);
