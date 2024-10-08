@@ -80,16 +80,25 @@ export const Corner = styled.div`
     }
 `;
 
-export const Edge = styled.div`
+export const Edge = styled.div<{
+    width: number;
+    centerX: number;
+    centerY: number;
+    angle: number;
+    playerColor?: string;
+}>`
     cursor: pointer;
     position: absolute;
     height: 5px; /* line thickness */
 
-    background-color: #b57112;
     border: 1px solid black;
 
-    /* accounts for the fact that we have the shape's center coordinates, but are using top and left positions */
-    transform: translate(-50%, -50%);
+    width: ${(props) => props.width}px;
+    left: ${(props) => props.centerX}px;
+    top: ${(props) => props.centerY}px;
+    transform: translate(-50%, -50%) rotate(${(props) => props.angle}deg);
+    background-color: ${(props) =>
+        props.playerColor ? props.playerColor : "#b57112"};
 
     &:hover {
         background: #efefef !important;

@@ -95,13 +95,11 @@ export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
             <Edge
                 key={edge.id}
                 onClick={() => onClickEdge(edge.id)}
-                style={{
-                    width: length,
-                    left: centerX,
-                    top: centerY,
-                    transform: `translate(-50%, -50%) rotate(${angle}deg)`,
-                    backgroundColor: player?.color,
-                }}
+                width={length}
+                centerX={centerX}
+                centerY={centerY}
+                angle={angle}
+                playerColor={player?.color}
             />
         );
     }
