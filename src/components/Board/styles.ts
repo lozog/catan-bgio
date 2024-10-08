@@ -1,6 +1,12 @@
 import { styled } from "styled-components";
 import { Building, TileType } from "../../lib/types";
-import { TILE_COLORS } from "../../constants";
+import {
+    CORNER_SIZE,
+    HEXAGON_SIZE,
+    ROAD_WIDTH,
+    TILE_COLORS,
+    Color,
+} from "../../constants";
 
 export const Container = styled.div`
     display: flex;
@@ -45,7 +51,7 @@ export const TileValue = styled.div`
     line-height: normal;
     font-size: 20px;
     font-weight: bold;
-    color: #efefef;
+    color: ${Color.hover};
 `;
 
 export const Hexagon = styled.div<{
@@ -54,7 +60,7 @@ export const Hexagon = styled.div<{
     tileType: TileType;
 }>`
     position: absolute;
-    width: 100px; /* hexagon size */
+    width: ${HEXAGON_SIZE}px;
     line-height: 32px;
     text-align: center;
 
@@ -70,7 +76,11 @@ export const Hexagon = styled.div<{
     transform: translate(-50%, -50%);
 
     &:hover {
-        background: #efefef;
+        background: ${Color.hover};
+    }
+
+    &:hover ${TileValue} {
+        color: black;
     }
 `;
 
@@ -82,9 +92,9 @@ export const Corner = styled.div<{
 }>`
     cursor: pointer;
     position: absolute;
-    width: 20px;
-    height: 20px;
-    clip-path: circle(10px);
+    width: ${CORNER_SIZE}px;
+    height: ${CORNER_SIZE}px;
+    clip-path: circle(${CORNER_SIZE / 2}px);
     color: white;
     font-size: 8px;
     line-height: 18px;
@@ -102,7 +112,8 @@ export const Corner = styled.div<{
     transform: translate(-50%, -50%);
 
     &:hover {
-        background: #efefef;
+        color: black;
+        background: ${Color.hover};
     }
 `;
 
@@ -115,18 +126,17 @@ export const Edge = styled.div<{
 }>`
     cursor: pointer;
     position: absolute;
-    height: 5px; /* line thickness */
-
-    border: 1px solid black;
+    height: ${ROAD_WIDTH}px; /* line thickness */
 
     width: ${(props) => props.width}px;
     left: ${(props) => props.centerX}px;
     top: ${(props) => props.centerY}px;
     transform: translate(-50%, -50%) rotate(${(props) => props.angle}deg);
     background-color: ${(props) =>
-        props.playerColor ? props.playerColor : "#b57112"};
+        props.playerColor ? props.playerColor : Color.road};
 
     &:hover {
-        background: #efefef;
+        color: black;
+        background: ${Color.hover};
     }
 `;

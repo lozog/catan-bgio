@@ -1,4 +1,4 @@
-enum Color {
+export enum Color {
     wood = "#385626",
     brick = "#b33e27",
     ore = "#aa998f",
@@ -6,6 +6,8 @@ enum Color {
     wheat = "#f7bc36",
     sheep = "#92bb50",
     desert = "#c79f56",
+    road = "#b57112",
+    hover = "#efefef",
     player1 = "red",
     player2 = "blue",
     player3 = "green",
@@ -56,3 +58,7 @@ export const BUILDING_COSTS = {
 };
 
 export const BOARD_OFFSET = 300;
+
+export const HEXAGON_SIZE = 100;
+export const CORNER_SIZE = HEXAGON_SIZE / 5;
+export const ROAD_WIDTH = 8;
