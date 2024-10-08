@@ -1,5 +1,5 @@
-import "./TradeWindow.css";
+import { Container } from "./styles";
 
 export function TradeWindow() {
-    return <div className="trade-window">Trade</div>;
+    return <Container>Trade</Container>;
 }
