@@ -11,8 +11,11 @@ export const BoardContainer = styled.div`
     flex-grow: 1;
 `;
 
-export const BoardWrapper = styled.div`
+export const BoardWrapper = styled.div<{ height: number; width: number }>`
     position: relative;
+
+    height: ${(props) => props.height}px;
+    width: ${(props) => props.width}px;
 `;
 
 export const Hud = styled.div`

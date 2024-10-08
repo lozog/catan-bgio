@@ -110,10 +110,8 @@ export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
                         }}
                     >
                         <BoardWrapper
-                            style={{
-                                height: G.board.height,
-                                width: G.board.width + BOARD_OFFSET,
-                            }}
+                            height={G.board.height}
+                            width={G.board.width + BOARD_OFFSET}
                         >
                             {tiles}
                             {edges}
