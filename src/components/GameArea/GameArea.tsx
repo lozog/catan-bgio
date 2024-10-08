@@ -19,7 +19,7 @@ import {
     TurnInfo,
 } from "./styles";
 
-export function HexBoard({ ctx, G, moves, playerID }: BoardProps<GameState>) {
+export function GameArea({ ctx, G, moves, playerID }: BoardProps<GameState>) {
     const [isTradeWindowOpen, setIsTradeWindowOpen] = useState(false);
 
     const onClickCorner = (id: string, building: Building | null) => {
