@@ -94,10 +94,10 @@ export const Corner = styled.div<{
     position: absolute;
     width: ${CORNER_SIZE}px;
     height: ${CORNER_SIZE}px;
-    clip-path: circle(${CORNER_SIZE / 2}px);
     color: white;
     font-size: 8px;
     line-height: 18px;
+    text-align: center;
 
     left: ${(props) => props.$centerX}px;
     top: ${(props) => props.$centerY}px;
@@ -106,7 +106,7 @@ export const Corner = styled.div<{
     clip-path: ${(props) =>
         props.$building === "city"
             ? "polygon(50% 0, 0 100%, 100% 100%)" // draw city as a triangle
-            : "circle(10px)"};
+            : "circle(" + CORNER_SIZE / 2 + "px)"};
 
     /* accounts for the fact that we have the shape's center coordinates, but are using top and left positions */
     transform: translate(-50%, -50%);
