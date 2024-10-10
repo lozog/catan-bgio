@@ -193,9 +193,8 @@ export const HexGame: Game<GameState> = {
             next: "setupReverse",
             turn: {
                 order: {
-                    first: ({ G, ctx }) => 0,
-                    next: ({ G, ctx }) =>
-                        (ctx.playOrderPos + 1) % ctx.numPlayers,
+                    first: () => 0,
+                    next: ({ ctx }) => (ctx.playOrderPos + 1) % ctx.numPlayers,
                 },
                 minMoves: 2,
                 maxMoves: 2,
@@ -233,14 +232,13 @@ export const HexGame: Game<GameState> = {
             next: "main",
             turn: {
                 order: {
-                    first: ({ G, ctx }) => ctx.numPlayers - 1,
-                    next: ({ G, ctx }) =>
-                        (ctx.playOrderPos - 1) % ctx.numPlayers,
+                    first: ({ ctx }) => ctx.numPlayers - 1,
+                    next: ({ ctx }) => (ctx.playOrderPos - 1) % ctx.numPlayers,
                 },
                 minMoves: 2,
                 maxMoves: 2,
             },
-            endIf: ({ G, ctx }) => ctx.playOrderPos < 0,
+            endIf: ({ ctx }) => ctx.playOrderPos < 0,
             moves: {
                 buildSettlement: ({ G, playerID }, id) => {
                     console.log(`clicked ${id}`);
@@ -276,7 +274,7 @@ export const HexGame: Game<GameState> = {
         },
         main: {
             moves: {
-                rollDice: ({ G, playerID, random }) => {
+                rollDice: ({ G, random }) => {
                     if (G.diceRoll.length !== 0) return INVALID_MOVE;
                     G.diceRoll = random.D6(2);
                     const diceTotal = G.diceRoll[0] + G.diceRoll[1];
@@ -285,9 +283,12 @@ export const HexGame: Game<GameState> = {
                     // hand out all resources
                     distributeResources(G, diceTotal);
                 },
-                endTurn: ({ G, playerId, events }) => {
+                endTurn: ({ G, events }) => {
+                    console.log(G.diceRoll.length);
                     if (G.diceRoll.length === 0) return INVALID_MOVE;
                     G.diceRoll = [];
+                    console.log("ending turn");
+
                     events.endTurn();
                 },
                 buildSettlement: ({ G, playerID }, id) => {
