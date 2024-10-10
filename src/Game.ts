@@ -189,7 +189,6 @@ export const HexGame: Game<GameState> = {
     },
     phases: {
         setupForward: {
-            start: true,
             next: "setupReverse",
             turn: {
                 order: {
@@ -273,6 +272,7 @@ export const HexGame: Game<GameState> = {
             },
         },
         main: {
+            start: true,
             moves: {
                 rollDice: ({ G, random }) => {
                     if (G.diceRoll.length !== 0) return INVALID_MOVE;
