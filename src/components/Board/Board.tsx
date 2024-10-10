@@ -12,9 +12,8 @@ import {
 } from "./styles";
 
 export function Board({ G, moves }: BoardProps<GameState>) {
-    const onClickCorner = (id: string, building: Building | null) => {
-        console.log("clicking with build", building);
-        if (building === "settlement") {
+    const onClickCorner = (id: string, currentBuilding: Building | null) => {
+        if (currentBuilding === "settlement") {
             moves.buildCity(id);
         } else {
             moves.buildSettlement(id);
