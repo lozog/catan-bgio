@@ -298,10 +298,7 @@ export const HexGame: Game<GameState> = {
 
                     if (!purchaseIfSufficientResources(G, player, "settlement"))
                         return INVALID_MOVE;
-                    // hold up - can this bug out and buy a settlement but not place it?
-                    // let's say you have enough resources to buy it but it's owned by someone else?
-                    // it's fine but i'm not really sure why
-                    // TODO: move the "if sufficient resources" out of this call
+
                     if (!placeSettlement(G, id, player)) return INVALID_MOVE;
                 },
                 buildRoad: ({ G, playerID }, id) => {
