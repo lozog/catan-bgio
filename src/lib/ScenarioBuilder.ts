@@ -431,6 +431,7 @@ export class ScenarioBuilder {
             victoryPoints: this.scenario.victoryPoints,
             players,
             diceRoll: [],
+            tradeOffer: null,
         };
     }
 }

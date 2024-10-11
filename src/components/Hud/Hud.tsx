@@ -1,21 +1,35 @@
 import type { BoardProps } from "boardgame.io/dist/types/packages/react";
-import { GameState } from "../../lib/types";
+import { GameState, Hand } from "../../lib/types";
 
 import { getPlayer } from "../../lib/helpers";
 import { useState } from "react";
 import { TradeWindow } from "../TradeWindow/TradeWindow";
 import { Controls, Container, PlayerResource, TurnInfo } from "./styles";
+import { TradeConfirmationMenu } from "../TradeConfirmationMenu/TradeConfirmationMenu";
 
 export function Hud({ ctx, G, moves, playerID }: BoardProps<GameState>) {
     const [isTradeWindowOpen, setIsTradeWindowOpen] = useState(false);
 
-    let currentPlayer;
+    const onOfferTrade = (offer: Hand) => {
+        moves.offerTrade(playerID, offer);
+    };
+
+    const onAcceptTrade = () => {
+        moves.acceptTrade(playerID);
+    };
+
+    const onRejectTrade = () => {
+        moves.rejectTrade(playerID);
+    };
+
+    let viewPlayer;
     if (!playerID) {
         // spectator mode
-        currentPlayer = getPlayer(G, ctx.currentPlayer);
+        viewPlayer = getPlayer(G, ctx.currentPlayer);
     } else {
-        currentPlayer = getPlayer(G, playerID);
+        viewPlayer = getPlayer(G, playerID);
     }
+
     return (
         <Container>
             <Controls>
@@ -39,31 +53,39 @@ export function Hud({ ctx, G, moves, playerID }: BoardProps<GameState>) {
                 >
                     End turn
                 </button>
-                {isTradeWindowOpen && <TradeWindow />}
+                {!!G.tradeOffer && G.tradeOffer.playerID !== viewPlayer.id && (
+                    <TradeConfirmationMenu
+                        tradeOffer={G.tradeOffer}
+                        onAcceptTrade={onAcceptTrade}
+                        onRejectTrade={onRejectTrade}
+                    />
+                )}
+                {!G.tradeOffer || // ugh
+                    (G.tradeOffer &&
+                        G.tradeOffer.playerID === viewPlayer.id &&
+                        isTradeWindowOpen && (
+                            <TradeWindow onOfferTrade={onOfferTrade} />
+                        ))}
             </Controls>
             <TurnInfo>
                 <div>Current phase: {ctx.phase}</div>
-                <div>player: {currentPlayer.id}</div>
+                <div>currently viewing player: {viewPlayer.id}</div>
 
                 <div>
                     Roll:{" "}
                     {G.diceRoll.length ? G.diceRoll[0] + G.diceRoll[1] : "--"}
                 </div>
+                <PlayerResource>wood: {viewPlayer.hand["wood"]}</PlayerResource>
                 <PlayerResource>
-                    wood: {currentPlayer.hand["wood"]}
+                    brick: {viewPlayer.hand["brick"]}
                 </PlayerResource>
                 <PlayerResource>
-                    brick: {currentPlayer.hand["brick"]}
+                    sheep: {viewPlayer.hand["sheep"]}
                 </PlayerResource>
                 <PlayerResource>
-                    sheep: {currentPlayer.hand["sheep"]}
+                    wheat: {viewPlayer.hand["wheat"]}
                 </PlayerResource>
-                <PlayerResource>
-                    wheat: {currentPlayer.hand["wheat"]}
-                </PlayerResource>
-                <PlayerResource>
-                    ore: {currentPlayer.hand["ore"]}
-                </PlayerResource>
+                <PlayerResource>ore: {viewPlayer.hand["ore"]}</PlayerResource>
             </TurnInfo>
         </Container>
     );

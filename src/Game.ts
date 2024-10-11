@@ -325,6 +325,25 @@ export const HexGame: Game<GameState> = {
 
                     if (!placeCity(G, id, player)) return INVALID_MOVE;
                 },
+                offerTrade: ({ G, events }, id, offer: Hand) => {
+                    G.tradeOffer = {
+                        playerID: id,
+                        offer,
+                    };
+
+                    events.endTurn();
+                    events.setPhase("tradeOffer");
+                },
+            },
+        },
+        tradeOffer: {
+            moves: {
+                acceptTrade: ({ G, playerID }, id) => {
+                    console.log(playerID, "accepted");
+                },
+                rejectTrade: ({ G, playerID }, id) => {
+                    console.log(playerID, "rejected");
+                },
             },
         },
     },

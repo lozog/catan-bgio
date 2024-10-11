@@ -71,6 +71,11 @@ export interface Hand {
     sheep: number;
 }
 
+export interface TradeOffer {
+    playerID: string; // TODO: change all id var names to end in ID
+    offer: Hand;
+}
+
 export interface Player {
     id: string;
     color: string;
@@ -86,4 +91,5 @@ export interface GameState {
     victoryPoints: number;
     players: Player[];
     diceRoll: number[];
+    tradeOffer: TradeOffer | null;
 }

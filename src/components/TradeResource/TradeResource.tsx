@@ -1,4 +1,4 @@
-import { Resource } from "../../../lib/types";
+import { Resource } from "../../lib/types";
 import { Container } from "./styles";
 
 export function TradeResource({

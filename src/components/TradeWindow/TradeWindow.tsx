@@ -8,10 +8,14 @@ import {
     Receive,
     ResourceContainer,
 } from "./styles";
-import { TradeResource } from "./TradeResource/TradeResource";
-import { Resource } from "../../lib/types";
+import { TradeResource } from "../TradeResource/TradeResource";
+import { Hand, Resource } from "../../lib/types";
 
-export function TradeWindow() {
+type Props = {
+    onOfferTrade: (offer: Hand) => void;
+};
+
+export function TradeWindow({ onOfferTrade }: Props) {
     // positive numbers buy, negative numbers sell
     const [offer, setOffer] = useState({
         wood: 0,
@@ -49,7 +53,13 @@ export function TradeWindow() {
                 </LabelContainer>
                 <ResourceContainer>{renderTradeResources()}</ResourceContainer>
             </OfferContainer>
-            <button>Offer trade</button>
+            <button
+                onClick={() => {
+                    onOfferTrade(offer);
+                }}
+            >
+                Offer trade
+            </button>
         </Container>
     );
 }
